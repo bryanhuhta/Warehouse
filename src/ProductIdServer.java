@@ -1,20 +1,18 @@
-import java.io.Serializable;// AUTHOR : Bryan Huhta
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-public class ClientIdServer implements Serializable {
+public class ProductIdServer implements Serializable {
     private int idCounter;
-    private static ClientIdServer server;
+    private static ProductIdServer server;
 
-    private ClientIdServer() {
+    private ProductIdServer() {
         idCounter = 1;
     }
 
-    public static ClientIdServer instance() {
+    public static ProductIdServer instance() {
         if (server == null) {
-            return (server = new ClientIdServer());
+            return (server = new ProductIdServer());
         }
         else {
             return server;
@@ -27,7 +25,7 @@ public class ClientIdServer implements Serializable {
 
     public static void retrieve(ObjectInputStream inputStream) {
         try {
-            server = (ClientIdServer) inputStream.readObject();
+            server = (ProductIdServer) inputStream.readObject();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -50,7 +48,7 @@ public class ClientIdServer implements Serializable {
         try {
             inputStream.defaultReadObject();
             if (server == null) {
-                server = (ClientIdServer) inputStream.readObject();
+                server = (ProductIdServer) inputStream.readObject();
             }
             else {
                 inputStream.readObject();
