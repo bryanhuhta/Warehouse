@@ -1,2 +1,10 @@
 *.idea
+.idea/
+
 *.iml
+
+out/
+
+WarehouseData
+
+*.class
