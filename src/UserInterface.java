@@ -218,7 +218,8 @@ public class UserInterface {
             System.out.println("Cannot add manufacturer.");
         }
     }
-    // 4.
+
+    // 5.
     private void listClients() {
         Iterator iterator = warehouse.getClients();
 
@@ -229,7 +230,7 @@ public class UserInterface {
         }
     }
 
-    // 5.
+    // 6.
     private void listProducts() {
         Iterator iterator = warehouse.getProducts();
 
@@ -240,7 +241,7 @@ public class UserInterface {
         }
     }
 
-    // 6.
+    // 7.
     private void listManufacturers() {
         Iterator iterator = warehouse.getManufacturers();
 
