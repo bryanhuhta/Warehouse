@@ -137,7 +137,7 @@ public class UserInterface {
                 "[ " + HELP + " ] for help\n" +
                 "[ " + SAVE + " ] to save data\n" +
                 "[ " + ADD_CLIENT + " ] to add a client\n" +
-                "[ " + ADD_PRODUCT + " ] to add a product\n" +
+                "[ " + ADD_PRODUCT + " ] to add products\n" +
                 "[ " + ADD_MANUFACTURERS + " ] to add a manufacturer\n" +
                 "[ " + LIST_CLIENTS + " ] to list clients\n" +
                 "[ " + LIST_PRODUCTS + " ] to list products\n" +
@@ -173,25 +173,36 @@ public class UserInterface {
     private void addProduct() {
         String name = null;
         Product product = null;
+        int count = 0;
 
-        do {
-            try {
-                System.out.print("Enter product name: ");
-                name = reader.readLine();
-            }
-            catch (Exception e) {
-                System.out.println("Invalid name, try again.");
-                e.printStackTrace();
-            }
-        } while (name == null);
+        System.out.println("Enter product names one at a time. " +
+                "Press return twice to finish list.");
 
-        product = warehouse.addProduct(name);
-        if (product != null) {
-            System.out.println("Added: " + product);
+        while (true) {
+            do {
+                try {
+                    System.out.print("Enter product name: ");
+                    name = reader.readLine();
+                } catch (Exception e) {
+                    System.out.println("Invalid name, try again.");
+                    e.printStackTrace();
+                }
+            } while (name == null);
+
+            if (name.equals("")) {
+                break;
+            }
+
+            product = warehouse.addProduct(name);
+            if (product != null) {
+                System.out.println("Added: " + product);
+                ++count;
+            } else {
+                System.out.println("Cannot add product.");
+            }
         }
-        else {
-            System.out.println("Cannot add product.");
-        }
+
+        System.out.println("Added [ " + count + " ] items.");
     }
 
     // 4.
