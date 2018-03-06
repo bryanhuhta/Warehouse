@@ -1,4 +1,4 @@
-// Author: Bryan Huhta
+// Author: Grace Hughes and Bryan Huhta
 
 import java.io.Serializable;
 
