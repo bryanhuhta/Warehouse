@@ -228,7 +228,7 @@ public class UserInterface {
                 name = reader.readLine();
             }
             catch (Exception e) {
-                System.out.println("Invalid name, try again");
+                System.out.println("Invalid name, try again.");
                 e.printStackTrace();
             }
         } while (name == null);
@@ -244,7 +244,50 @@ public class UserInterface {
 
     // 5.
     private void addSupplier() {
-        System.out.println("Add Supplier");
+        String mid = null;
+        String pid = null;
+        int quantity = -1;
+        double cost = -1;
+        Supplier supplier = null;
+
+        // Collect the mid and pid.
+        do {
+            try {
+                System.out.print("Enter a manufacturer id: ");
+                mid = reader.readLine();
+
+                System.out.print("Enter a product id: ");
+                pid = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid id(s), try again.");
+                e.printStackTrace();
+            }
+        } while (mid == null && pid == null);
+
+        // Collect the quantity and cost.
+        do {
+            try {
+                System.out.print("Enter quantity: ");
+                quantity = Integer.parseInt(reader.readLine());
+
+                System.out.print("Enter cost: ");
+                cost = Double.parseDouble(reader.readLine());
+            }
+            catch (Exception e) {
+                System.out.println("Invalid input, try again.");
+                e.printStackTrace();
+            }
+        } while (quantity < 0 && cost < 0);
+
+        // Create the supplier.
+        supplier = warehouse.addSupplier(mid, pid, quantity, cost);
+        if (supplier != null) {
+            System.out.println("Added:\n" + supplier);
+        }
+        else {
+            System.out.println("Cannot add supplier.");
+        }
     }
 
     // 6.
@@ -282,7 +325,13 @@ public class UserInterface {
 
     // 9.
     private void listSuppliers() {
-        System.out.println("List Suppliers");
+        Iterator iterator = warehouse.getSuppliers();
+
+        while (iterator.hasNext()) {
+            Supplier temp = (Supplier) iterator.next();
+
+            System.out.println(temp);
+        }
     }
     // End commands.
 

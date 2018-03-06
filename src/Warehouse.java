@@ -66,7 +66,59 @@ public class Warehouse implements Serializable {
 
         return null;
     }
+
+    public Supplier addSupplier(String mid, String pid, int quantity,
+                                double cost) {
+        Supplier supplier = null;
+        Manufacturer manufacturer = getManufacturer(mid);
+        Product product = getProduct(pid);
+
+        if (manufacturer != null && product != null) {
+            supplier = new Supplier(manufacturer, product, quantity, cost);
+
+            // Null supplier if it cannot be added.
+            if (!supplierList.addSupplier(supplier)) {
+                supplier = null;
+            }
+        }
+
+        return supplier;
+    }
     // End add/delete methods.
+
+    // Getters.
+    public Product getProduct(String pid) {
+        Product product = null;
+        Iterator iterator = getProducts();
+
+        while (iterator.hasNext()) {
+            Product temp = (Product) iterator.next();
+
+            if (pid.equals(temp.getProductId())) {
+                product = temp;
+                break;
+            }
+        }
+
+        return product;
+    }
+
+    public Manufacturer getManufacturer(String mid) {
+        Manufacturer manufacturer = null;
+        Iterator iterator = getManufacturers();
+
+        while (iterator.hasNext()) {
+            Manufacturer temp = (Manufacturer) iterator.next();
+
+            if (mid.equals(temp.getId())) {
+                manufacturer = temp;
+                break;
+            }
+        }
+
+        return manufacturer;
+    }
+    // End getters.
 
     // Iterators.
     public Iterator<Client> getClients() {
@@ -79,6 +131,10 @@ public class Warehouse implements Serializable {
 
     public Iterator<Manufacturer> getManufacturers() {
         return manufacturerList.getManufacturers();
+    }
+
+    public Iterator<Supplier> getSuppliers() {
+        return supplierList.getSuppliers();
     }
     // End iterators.
 
