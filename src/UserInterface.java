@@ -15,7 +15,7 @@ public class UserInterface {
                              SAVE                   = 1,
                              ADD_CLIENT             = 2,
                              ADD_PRODUCT            = 3,
-                             ADD_MANUNFACTURERS     = 4,
+                             ADD_MANUFACTURERS      = 4,
                              LIST_CLIENTS           = 5,
                              LIST_PRODUCTS          = 6,
                              LIST_MANUFACTURERS     = 7,
@@ -108,8 +108,8 @@ public class UserInterface {
                     addProduct();
                     break;
 
-                case ADD_MANUNFACTURERS:
-                    addManunfacturers();
+                case ADD_MANUFACTURERS:
+                    addManufacturers();
                     break;
 
                 case LIST_CLIENTS:
@@ -138,7 +138,7 @@ public class UserInterface {
                 "[ " + SAVE + " ] to save data\n" +
                 "[ " + ADD_CLIENT + " ] to add a client\n" +
                 "[ " + ADD_PRODUCT + " ] to add a product\n" +
-                "[ " + ADD_MANUNFACTURERS + " ] to add a manufacturer\n" +
+                "[ " + ADD_MANUFACTURERS + " ] to add a manufacturer\n" +
                 "[ " + LIST_CLIENTS + " ] to list clients\n" +
                 "[ " + LIST_PRODUCTS + " ] to list products\n" +
                 "[ " + LIST_MANUFACTURERS + " ] to list manufacturers\n" +
@@ -195,7 +195,7 @@ public class UserInterface {
     }
 
     // 4.
-    private void addManunfacturers() {
+    private void addManufacturers() {
         String name = null;
         Manufacturer manufacturer = null;
 
@@ -242,7 +242,13 @@ public class UserInterface {
 
     // 6.
     private void listManufacturers() {
-        System.out.println("list manufac");
+        Iterator iterator = warehouse.getManufacturers();
+
+        while (iterator.hasNext()) {
+            Manufacturer temp = (Manufacturer) iterator.next();
+
+            System.out.println(temp);
+        }
     }
     // End commands.
 

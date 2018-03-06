@@ -93,6 +93,10 @@ public class Warehouse implements Serializable {
     public Iterator<Product> getProducts() {
         return productList.getProducts();
     }
+
+    public Iterator<Manufacturer> getManufacturers() {
+        return manufacturerList.getManufacturers();
+    }
     // End iterators.
 
     // Serialize/deserialize.
