@@ -11,18 +11,23 @@ import static java.lang.System.exit;
 import static java.lang.System.out;
 
 public class UserInterface {
-    private static final int HELP                   = 0,
-                             SAVE                   = 1,
-                             ADD_CLIENT             = 2,
-                             ADD_PRODUCT            = 3,
-                             ADD_MANUFACTURERS      = 4,
-                             ADD_SUPPLIER           = 5,
-                             DELETE_SUPPLIER        = 6,
-                             LIST_CLIENTS           = 7,
-                             LIST_PRODUCTS          = 8,
-                             LIST_MANUFACTURERS     = 9,
-                             LIST_SUPPLIERS         = 10,
-                             EXIT                   = 11;
+    private static final int HELP                               = 0,
+                             SAVE                               = 1,
+                             ADD_CLIENT                         = 2,
+                             ADD_PRODUCT                        = 3,
+                             ADD_MANUFACTURERS                  = 4,
+                             ADD_SUPPLIER                       = 5,
+                             DELETE_SUPPLIER                    = 6,
+                             LIST_CLIENTS                       = 7,
+                             LIST_PRODUCTS                      = 8,
+                             LIST_MANUFACTURERS                 = 9,
+                             LIST_SUPPLIERS                     = 10,
+                             LIST_CLIENTS_OUTSTANDING_BALANCE   = 11,
+                             GET_WAITLISTED_ORDERS_PRODUCT      = 12,
+                             GET_WAITLISTED_ORDERS_CLIENT       = 13,
+                             ACCEPT_CLIENT_PAYMENT              = 14,
+                             PLACE_CLIENT_ORDER                 = 15,
+                             EXIT                               = 16;
 
     private static  UserInterface ui;
     private BufferedReader reader = new BufferedReader(
@@ -138,6 +143,26 @@ public class UserInterface {
                 case  LIST_SUPPLIERS:
                     listSuppliers();
                     break;
+
+                case LIST_CLIENTS_OUTSTANDING_BALANCE:
+                    listOutstandingBalances();
+                    break;
+
+                case GET_WAITLISTED_ORDERS_PRODUCT:
+                    getProductWaitlist();
+                    break;
+
+                case GET_WAITLISTED_ORDERS_CLIENT:
+                    getClientWaitlist();
+                    break;
+
+                case ACCEPT_CLIENT_PAYMENT:
+                    acceptClientPayment();
+                    break;
+
+                case PLACE_CLIENT_ORDER:
+                    placeOrder();
+                    break;
             }
         }
 
@@ -160,6 +185,15 @@ public class UserInterface {
                 "[ " + LIST_PRODUCTS + " ] to list products\n" +
                 "[ " + LIST_MANUFACTURERS + " ] to list manufacturers\n" +
                 "[ " + LIST_SUPPLIERS + " ] to list suppliers\n" +
+                "[ " + LIST_CLIENTS_OUTSTANDING_BALANCE + " ] " +
+                    "to list clients with an outstanding balance\n" +
+                "[ " + GET_WAITLISTED_ORDERS_PRODUCT + " ] " +
+                    "to list waitlisted orders for a product\n" +
+                "[ " + GET_WAITLISTED_ORDERS_CLIENT + " ] " +
+                    "to list waitlisted orders for a client\n" +
+                "[ " + ACCEPT_CLIENT_PAYMENT + " ] " +
+                    "to accept a client payment\n" +
+                "[ " + PLACE_CLIENT_ORDER + " ] to place a client order\n" +
                 "[ " + EXIT + " ] to exit";
 
         System.out.println(message);
@@ -366,6 +400,31 @@ public class UserInterface {
 
             System.out.println(temp);
         }
+    }
+
+    // 11.
+    private void listOutstandingBalances() {
+
+    }
+
+    // 12.
+    private void getProductWaitlist() {
+
+    }
+
+    // 13.
+    private void getClientWaitlist() {
+
+    }
+
+    // 14.
+    private void acceptClientPayment() {
+
+    }
+
+    // 15.
+    private void placeOrder() {
+
     }
     // End commands.
 
