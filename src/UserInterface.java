@@ -108,12 +108,20 @@ public class UserInterface {
                     addProduct();
                     break;
 
+                case ADD_MANUNFACTURERS:
+                    addManunfacturers();
+                    break;
+
                 case LIST_CLIENTS:
                     listClients();
                     break;
 
                 case LIST_PRODUCTS:
                     listProducts();
+                    break;
+
+                case LIST_MANUFACTURERS:
+                    listManufacturers();
                     break;
             }
         }

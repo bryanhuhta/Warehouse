@@ -104,6 +104,7 @@ public class Warehouse implements Serializable {
             inputStream.readObject();
             ClientIdServer.retrieve(inputStream);
             ProductIdServer.retrieve(inputStream);
+            ManufacturerIdServer.retrieve(inputStream);
 
             return warehouse;
         }
@@ -121,6 +122,7 @@ public class Warehouse implements Serializable {
             outputStream.writeObject(warehouse);
             outputStream.writeObject(ClientIdServer.instance());
             outputStream.writeObject(ProductIdServer.instance());
+            outputStream.writeObject(ManufacturerIdServer.instance());
 
             return true;
         }
