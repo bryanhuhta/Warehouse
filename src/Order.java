@@ -1,0 +1,63 @@
+// Author: Wencel Kust and Bryan Huhta
+
+import java.io.Serializable;
+
+public class Order implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private static final String ORDER_STRING = "O";
+
+    private String id;
+    private Supplier supplier;
+    private Client client;
+    private int amount;
+    private boolean isWaitlisted;
+
+    public Order(Supplier supplier, Client client, int amount) {
+        this.id = ORDER_STRING + (OrderIdServer.instance()).getId();
+        this.supplier = supplier;
+        this.client = client;
+        this.amount = amount;
+        this.isWaitlisted = false;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public boolean isWaitlisted() {
+        return isWaitlisted;
+    }
+
+    public void setWaitlisted(boolean waitlisted) {
+        isWaitlisted = waitlisted;
+    }
+
+    @Override
+    public String toString() {
+        return "[ id: " + id +
+                ", supplier: " + supplier +
+                ", client: " + client +
+                ", amount: " + amount +
+                ", filled: " + !isWaitlisted;
+    }
+
+    public boolean equals(Order order) {
+        return this.id.equals(order.getId());
+    }
+}
