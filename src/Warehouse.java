@@ -84,6 +84,23 @@ public class Warehouse implements Serializable {
 
         return supplier;
     }
+
+    public boolean deleteSupplier(String mid, String pid) {
+        boolean deleted = false;
+        Iterator iterator = supplierList.getSuppliers();
+
+        while (iterator.hasNext()) {
+            Supplier temp = (Supplier) iterator.next();
+
+            if (temp.getManufacturer().getId().equals(mid) &&
+                    temp.getProduct().getProductId().equals(pid)) {
+                deleted = supplierList.deleteSupplier(temp);
+                break;
+            }
+        }
+
+        return deleted;
+    }
     // End add/delete methods.
 
     // Getters.

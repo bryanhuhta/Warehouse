@@ -17,11 +17,12 @@ public class UserInterface {
                              ADD_PRODUCT            = 3,
                              ADD_MANUFACTURERS      = 4,
                              ADD_SUPPLIER           = 5,
-                             LIST_CLIENTS           = 6,
-                             LIST_PRODUCTS          = 7,
-                             LIST_MANUFACTURERS     = 8,
-                             LIST_SUPPLIERS         = 9,
-                             EXIT                   = 10;
+                             DELETE_SUPPLIER        = 6,
+                             LIST_CLIENTS           = 7,
+                             LIST_PRODUCTS          = 8,
+                             LIST_MANUFACTURERS     = 9,
+                             LIST_SUPPLIERS         = 10,
+                             EXIT                   = 11;
 
     private static  UserInterface ui;
     private BufferedReader reader = new BufferedReader(
@@ -118,6 +119,10 @@ public class UserInterface {
                     addSupplier();
                     break;
 
+                case DELETE_SUPPLIER:
+                    deleteSupplier();
+                    break;
+
                 case LIST_CLIENTS:
                     listClients();
                     break;
@@ -150,6 +155,7 @@ public class UserInterface {
                 "[ " + ADD_PRODUCT + " ] to add products\n" +
                 "[ " + ADD_MANUFACTURERS + " ] to add a manufacturer\n" +
                 "[ " + ADD_SUPPLIER + " ] to add a supplier\n" +
+                "[ " + DELETE_SUPPLIER + " ] to delete a supplier\n" +
                 "[ " + LIST_CLIENTS + " ] to list clients\n" +
                 "[ " + LIST_PRODUCTS + " ] to list products\n" +
                 "[ " + LIST_MANUFACTURERS + " ] to list manufacturers\n" +
@@ -291,6 +297,34 @@ public class UserInterface {
     }
 
     // 6.
+    private void deleteSupplier() {
+        String mid = null;
+        String pid = null;
+
+        // Collect the mid and pid.
+        do {
+            try {
+                System.out.print("Enter a manufacturer id: ");
+                mid = reader.readLine();
+
+                System.out.print("Enter a product id: ");
+                pid = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid id(s), try again.");
+                e.printStackTrace();
+            }
+        } while (mid == null && pid == null);
+
+        if (warehouse.deleteSupplier(mid, pid)) {
+            System.out.println("Deleted supplier.");
+        }
+        else {
+            System.out.println("Cannot delete supplier.");
+        }
+    }
+
+    // 7.
     private void listClients() {
         Iterator iterator = warehouse.getClients();
 
@@ -301,7 +335,7 @@ public class UserInterface {
         }
     }
 
-    // 7.
+    // 8.
     private void listProducts() {
         Iterator iterator = warehouse.getProducts();
 
@@ -312,7 +346,7 @@ public class UserInterface {
         }
     }
 
-    // 8.
+    // 9.
     private void listManufacturers() {
         Iterator iterator = warehouse.getManufacturers();
 
@@ -323,7 +357,7 @@ public class UserInterface {
         }
     }
 
-    // 9.
+    // 10.
     private void listSuppliers() {
         Iterator iterator = warehouse.getSuppliers();
 
