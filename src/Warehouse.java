@@ -9,12 +9,14 @@ public class Warehouse implements Serializable {
     private static final String DATA_FILE = "WarehouseData";
 
     private ClientList clientList;
+    private ProductList productList;
 
     private static Warehouse warehouse;
 
     // Construct Warehouse.
     private Warehouse() {
         clientList = ClientList.instance();
+        productList = ProductList.instance();
     }
 
     public static Warehouse instance() {
@@ -34,6 +36,16 @@ public class Warehouse implements Serializable {
 
         if (clientList.addClient(client)) {
             return client;
+        }
+
+        return null;
+    }
+
+    public Product addProduct(String name) {
+        Product product = new Product(name);
+
+        if (productList.addProduct(product)) {
+            return product;
         }
 
         return null;
@@ -63,6 +75,10 @@ public class Warehouse implements Serializable {
     public Iterator<Client> getClients() {
         return clientList.getClients();
     }
+
+    public Iterator<Product> getProducts() {
+        return productList.getProducts();
+    }
     // End iterators.
 
     // Serialize/deserialize.
@@ -73,6 +89,7 @@ public class Warehouse implements Serializable {
 
             inputStream.readObject();
             ClientIdServer.retrieve(inputStream);
+            ProductIdServer.retrieve(inputStream);
 
             return warehouse;
         }
@@ -89,6 +106,7 @@ public class Warehouse implements Serializable {
 
             outputStream.writeObject(warehouse);
             outputStream.writeObject(ClientIdServer.instance());
+            outputStream.writeObject(ProductIdServer.instance());
 
             return true;
         }

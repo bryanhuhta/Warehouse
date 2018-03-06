@@ -13,8 +13,10 @@ public class UserInterface {
     private static final int HELP           = 0,
                              SAVE           = 1,
                              ADD_CLIENT     = 2,
-                             LIST_CLIENTS   = 3,
-                             EXIT           = 4;
+                             ADD_PRODUCT    = 3,
+                             LIST_CLIENTS   = 4,
+                             LIST_PRODUCTS  = 5,
+                             EXIT           = 6;
 
     private static  UserInterface ui;
     private BufferedReader reader = new BufferedReader(
@@ -99,8 +101,16 @@ public class UserInterface {
                     addClient();
                     break;
 
+                case ADD_PRODUCT:
+                    addProduct();
+                    break;
+
                 case LIST_CLIENTS:
                     listClients();
+                    break;
+
+                case LIST_PRODUCTS:
+                    listProducts();
                     break;
             }
         }
@@ -116,7 +126,9 @@ public class UserInterface {
                 "[ " + HELP + " ] for help\n" +
                 "[ " + SAVE + " ] to save data\n" +
                 "[ " + ADD_CLIENT + " ] to add a client\n" +
+                "[ " + ADD_PRODUCT + " ] to add a product\n" +
                 "[ " + LIST_CLIENTS + " ] to list clients\n" +
+                "[ " + LIST_PRODUCTS + " ] to list products\n" +
                 "[ " + EXIT + " ] to exit";
 
         System.out.println(message);
@@ -145,11 +157,47 @@ public class UserInterface {
     }
 
     // 3.
+    private void addProduct() {
+        String name = null;
+        Product product = null;
+
+        do {
+            try {
+                System.out.print("Enter product name: ");
+                name = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid name, try again.");
+                e.printStackTrace();
+            }
+        } while (name == null);
+
+        product = warehouse.addProduct(name);
+        if (product != null) {
+            System.out.println("Added: " + product);
+        }
+        else {
+            System.out.println("Cannot add product.");
+        }
+    }
+
+    // 4.
     private void listClients() {
         Iterator iterator = warehouse.getClients();
 
         while (iterator.hasNext()) {
             Client temp = (Client) iterator.next();
+
+            System.out.println(temp);
+        }
+    }
+
+    // 5.
+    private void listProducts() {
+        Iterator iterator = warehouse.getProducts();
+
+        while (iterator.hasNext()) {
+            Product temp = (Product) iterator.next();
 
             System.out.println(temp);
         }
@@ -173,7 +221,6 @@ public class UserInterface {
             e.printStackTrace();
         }
     }
-
 
     public static void main(String args[]) {
         UserInterface.instance().process();
