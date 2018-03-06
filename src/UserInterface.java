@@ -16,10 +16,12 @@ public class UserInterface {
                              ADD_CLIENT             = 2,
                              ADD_PRODUCT            = 3,
                              ADD_MANUFACTURERS      = 4,
-                             LIST_CLIENTS           = 5,
-                             LIST_PRODUCTS          = 6,
-                             LIST_MANUFACTURERS     = 7,
-                             EXIT                   = 8;
+                             ADD_SUPPLIER           = 5,
+                             LIST_CLIENTS           = 6,
+                             LIST_PRODUCTS          = 7,
+                             LIST_MANUFACTURERS     = 8,
+                             LIST_SUPPLIERS         = 9,
+                             EXIT                   = 10;
 
     private static  UserInterface ui;
     private BufferedReader reader = new BufferedReader(
@@ -112,6 +114,10 @@ public class UserInterface {
                     addManufacturers();
                     break;
 
+                case ADD_SUPPLIER:
+                    addSupplier();
+                    break;
+
                 case LIST_CLIENTS:
                     listClients();
                     break;
@@ -122,6 +128,10 @@ public class UserInterface {
 
                 case LIST_MANUFACTURERS:
                     listManufacturers();
+                    break;
+
+                case  LIST_SUPPLIERS:
+                    listSuppliers();
                     break;
             }
         }
@@ -139,9 +149,11 @@ public class UserInterface {
                 "[ " + ADD_CLIENT + " ] to add a client\n" +
                 "[ " + ADD_PRODUCT + " ] to add products\n" +
                 "[ " + ADD_MANUFACTURERS + " ] to add a manufacturer\n" +
+                "[ " + ADD_SUPPLIER + " ] to add a supplier\n" +
                 "[ " + LIST_CLIENTS + " ] to list clients\n" +
                 "[ " + LIST_PRODUCTS + " ] to list products\n" +
                 "[ " + LIST_MANUFACTURERS + " ] to list manufacturers\n" +
+                "[ " + LIST_SUPPLIERS + " ] to list suppliers\n" +
                 "[ " + EXIT + " ] to exit";
 
         System.out.println(message);
@@ -231,6 +243,11 @@ public class UserInterface {
     }
 
     // 5.
+    private void addSupplier() {
+        System.out.println("Add Supplier");
+    }
+
+    // 6.
     private void listClients() {
         Iterator iterator = warehouse.getClients();
 
@@ -241,7 +258,7 @@ public class UserInterface {
         }
     }
 
-    // 6.
+    // 7.
     private void listProducts() {
         Iterator iterator = warehouse.getProducts();
 
@@ -252,7 +269,7 @@ public class UserInterface {
         }
     }
 
-    // 7.
+    // 8.
     private void listManufacturers() {
         Iterator iterator = warehouse.getManufacturers();
 
@@ -261,6 +278,11 @@ public class UserInterface {
 
             System.out.println(temp);
         }
+    }
+
+    // 9.
+    private void listSuppliers() {
+        System.out.println("List Suppliers");
     }
     // End commands.
 

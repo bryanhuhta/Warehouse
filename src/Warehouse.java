@@ -11,6 +11,7 @@ public class Warehouse implements Serializable {
     private ClientList clientList;
     private ProductList productList;
     private ManufacturerList manufacturerList;
+    private SupplierList supplierList;
 
     private static Warehouse warehouse;
 
@@ -19,6 +20,7 @@ public class Warehouse implements Serializable {
         clientList = ClientList.instance();
         productList = ProductList.instance();
         manufacturerList = ManufacturerList.instance();
+        supplierList = SupplierList.instance();
     }
 
     public static Warehouse instance() {
@@ -65,25 +67,6 @@ public class Warehouse implements Serializable {
         return null;
     }
     // End add/delete methods.
-
-    // Getters.
-    public Client getClient(String cid) {
-        Client client = null;
-        Client temp = null;
-        Iterator iterator = warehouse.getClients();
-
-        while (iterator.hasNext()) {
-            temp = (Client) iterator.next();
-
-            if (temp.getId().equals(cid)) {
-                client = temp;
-                break;
-            }
-        }
-
-        return client;
-    }
-    // End getters.
 
     // Iterators.
     public Iterator<Client> getClients() {

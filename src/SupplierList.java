@@ -28,6 +28,7 @@ public class SupplierList implements Serializable {
         boolean canAdd = true;
         Iterator iterator = suppliers.iterator();
 
+        // Ensure supplier isn't already in list.
         while (iterator.hasNext()) {
             Supplier temp = (Supplier) iterator.next();
 
