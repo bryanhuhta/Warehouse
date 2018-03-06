@@ -10,6 +10,7 @@ public class Warehouse implements Serializable {
 
     private ClientList clientList;
     private ProductList productList;
+    private ManufacturerList manufacturerList;
 
     private static Warehouse warehouse;
 
@@ -17,11 +18,14 @@ public class Warehouse implements Serializable {
     private Warehouse() {
         clientList = ClientList.instance();
         productList = ProductList.instance();
+        manufacturerList = ManufacturerList.instance();
     }
 
     public static Warehouse instance() {
         if (warehouse == null) {
             ClientIdServer.instance();
+            ProductIdServer.instance();
+            ManufacturerIdServer.instance();
             return warehouse = new Warehouse();
         }
         else {
