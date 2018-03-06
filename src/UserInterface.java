@@ -10,13 +10,15 @@ import java.util.StringTokenizer;
 import static java.lang.System.exit;
 
 public class UserInterface {
-    private static final int HELP           = 0,
-                             SAVE           = 1,
-                             ADD_CLIENT     = 2,
-                             ADD_PRODUCT    = 3,
-                             LIST_CLIENTS   = 4,
-                             LIST_PRODUCTS  = 5,
-                             EXIT           = 6;
+    private static final int HELP                   = 0,
+                             SAVE                   = 1,
+                             ADD_CLIENT             = 2,
+                             ADD_PRODUCT            = 3,
+                             ADD_MANUNFACTURERS     = 4,
+                             LIST_CLIENTS           = 5,
+                             LIST_PRODUCTS          = 6,
+                             LIST_MANUFACTURERS     = 7,
+                             EXIT                   = 8;
 
     private static  UserInterface ui;
     private BufferedReader reader = new BufferedReader(
@@ -127,8 +129,10 @@ public class UserInterface {
                 "[ " + SAVE + " ] to save data\n" +
                 "[ " + ADD_CLIENT + " ] to add a client\n" +
                 "[ " + ADD_PRODUCT + " ] to add a product\n" +
+                "[ " + ADD_MANUNFACTURERS + " ] to add a manufacturer\n" +
                 "[ " + LIST_CLIENTS + " ] to list clients\n" +
                 "[ " + LIST_PRODUCTS + " ] to list products\n" +
+                "[ " + LIST_MANUFACTURERS + " ] to list manufacturers\n" +
                 "[ " + EXIT + " ] to exit";
 
         System.out.println(message);
@@ -182,6 +186,10 @@ public class UserInterface {
     }
 
     // 4.
+    private void addManunfacturers() {
+        System.out.println("Add manufac");
+    }
+    // 4.
     private void listClients() {
         Iterator iterator = warehouse.getClients();
 
@@ -201,6 +209,11 @@ public class UserInterface {
 
             System.out.println(temp);
         }
+    }
+
+    // 6.
+    private void listManufacturers() {
+        System.out.println("list manufac");
     }
     // End commands.
 
