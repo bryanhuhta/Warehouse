@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import static java.lang.System.exit;
+import static java.lang.System.out;
 
 public class UserInterface {
     private static final int HELP                   = 0,
@@ -187,7 +188,27 @@ public class UserInterface {
 
     // 4.
     private void addManunfacturers() {
-        System.out.println("Add manufac");
+        String name = null;
+        Manufacturer manufacturer = null;
+
+        do {
+            try {
+                System.out.print("Enter a manufacturer name: ");
+                name = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid name, try again");
+                e.printStackTrace();
+            }
+        } while (name == null);
+
+        manufacturer = warehouse.addManufacturer(name);
+        if (manufacturer != null) {
+            System.out.println("Added: " + manufacturer);
+        }
+        else {
+            System.out.println("Cannot add manufacturer.");
+        }
     }
     // 4.
     private void listClients() {

@@ -50,6 +50,16 @@ public class Warehouse implements Serializable {
 
         return null;
     }
+
+    public Manufacturer addManufacturer(String name) {
+        Manufacturer manufacturer = new Manufacturer(name);
+
+        if (manufacturerList.addManufacturer(manufacturer)) {
+            return manufacturer;
+        }
+
+        return null;
+    }
     // End add/delete methods.
 
     // Getters.
