@@ -41,9 +41,9 @@ public class Supplier implements Serializable {
     @Override
     public String toString() {
         return " [ manufacturer: " + manufacturer +
-                "\n  product: " + product +
-                "\n  quantity: " + quantity +
-                "\n  cost: " + cost + " ]";
+                ", product: " + product +
+                ",  quantity: " + quantity +
+                ",  cost: " + cost + " ]";
     }
 
     public boolean equals(Supplier supplier) {
