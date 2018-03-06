@@ -404,7 +404,15 @@ public class UserInterface {
 
     // 11.
     private void listOutstandingBalances() {
+        Iterator iterator = warehouse.getClients();
 
+        while (iterator.hasNext()) {
+            Client temp = (Client) iterator.next();
+
+            if (temp.getBalance() < 0) {
+                System.out.println(temp);
+            }
+        }
     }
 
     // 12.
