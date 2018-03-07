@@ -432,17 +432,116 @@ public class UserInterface {
 
     // 13.
     private void getProductWaitlist() {
+        String pid = null;
+        Product product = null;
 
+        do {
+            try {
+                System.out.print("Enter product id: ");
+                pid = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid product id, try again.");
+                e.printStackTrace();
+            }
+        } while (pid == null);
+
+        product = warehouse.getProduct(pid);
+        if (product == null) {
+            System.out.println("Product does not exist.");
+            return;
+        }
+
+        Iterator iterator = warehouse.getOrders();
+
+        while (iterator.hasNext()) {
+            Order temp = (Order) iterator.next();
+
+            if (temp.isWaitlisted() &&
+                    temp.getSupplier().getProduct() == product) {
+                System.out.println(temp);
+            }
+        }
     }
 
     // 14.
     private void getClientWaitlist() {
+        String cid = null;
+        Client client = null;
 
+        do {
+            try {
+                System.out.print("Enter client id: ");
+                cid = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid client id, try again.");
+                e.printStackTrace();
+            }
+        } while (cid == null);
+
+        client = warehouse.getClient(cid);
+        if (client == null) {
+            System.out.println("Client does not exist.");
+            return;
+        }
+
+        Iterator iterator = warehouse.getOrders();
+
+        while (iterator.hasNext()) {
+            Order temp = (Order) iterator.next();
+
+            if (temp.isWaitlisted() && temp.getClient() == client) {
+                System.out.println(temp);
+            }
+        }
     }
 
     // 15.
     private void acceptClientPayment() {
+        String cid = null;
+        double payment = -1;
+        Client client = null;
 
+        // Collect cid.
+        do {
+            try {
+                System.out.print("Enter client id: ");
+                cid = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid client id, try again.");
+                e.printStackTrace();
+            }
+        } while (cid == null);
+
+        // Collect payment amount.
+        do {
+            try {
+                System.out.print("Enter payment: ");
+                payment = Double.parseDouble(reader.readLine());
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Invalid, enter a number.");
+                payment = -1;
+            }
+            catch (Exception e) {
+                System.out.println("Invalid, enter a number.");
+                payment = -1;
+                e.printStackTrace();
+            }
+        } while (payment < 0);
+
+        // Find client.
+        client = warehouse.getClient(cid);
+        if (client == null) {
+            System.out.println("Client does not exist.");
+            return;
+        }
+
+        client.chargeAccount(payment);
+
+        System.out.println("Payment processed: " + client);
     }
 
     // 16.
@@ -523,6 +622,8 @@ public class UserInterface {
                 order.updateQuantity(supplier.getQuantity());
                 supplier.updateQuantity(supplier.getQuantity(), false);
 
+                // Charge client.
+                order.getClient().chargeAccount(-order.getCost());
 
                 // Create new (waitlisted) order with remaining quantity.
                 int remainingOrderQuantity = quantity - order.getQuantity();
@@ -549,6 +650,9 @@ public class UserInterface {
         else {
             // Fill an entire order.
             supplier.updateQuantity(quantity, false);
+
+            // Charge the client.
+            order.getClient().chargeAccount(-order.getCost());
 
             // Flag order as filled.
             order.setWaitlisted(false);

@@ -1,6 +1,8 @@
 // Author: Wencel Kust and Bryan Huhta
 
 import java.io.Serializable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -57,11 +59,14 @@ public class Order implements Serializable {
 
     @Override
     public String toString() {
+        DecimalFormat decimalFormat = new DecimalFormat("##.##");
+        decimalFormat.setRoundingMode(RoundingMode.DOWN);
+
         return "[ id: " + id +
                 ", supplier: " + supplier +
                 ", client: " + client +
                 ", quantity: " + quantity +
-                ", cost: " + cost +
+                ", cost: " + decimalFormat.format(cost) +
                 ", filled: " + !isWaitlisted + " ]";
     }
 
