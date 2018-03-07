@@ -12,6 +12,7 @@ public class Warehouse implements Serializable {
     private ProductList productList;
     private ManufacturerList manufacturerList;
     private SupplierList supplierList;
+    private OrderList orderList;
 
     private static Warehouse warehouse;
 
@@ -21,6 +22,7 @@ public class Warehouse implements Serializable {
         productList = ProductList.instance();
         manufacturerList = ManufacturerList.instance();
         supplierList = SupplierList.instance();
+        orderList = OrderList.instance();
     }
 
     public static Warehouse instance() {
@@ -101,9 +103,42 @@ public class Warehouse implements Serializable {
 
         return deleted;
     }
+
+    public Order addOrder(String mid, String pid, String cid, int quantity) {
+        Order order = null;
+        Supplier supplier = getSupplier(mid, pid);
+        Client client = getClient(cid);
+
+        if (supplier != null && client != null) {
+            order = new Order(supplier, client, quantity);
+
+            // Null order if it is not added to list.
+            if (!orderList.addOrder(order)) {
+                order = null;
+            }
+        }
+
+        return order;
+    }
     // End add/delete methods.
 
     // Getters.
+    public Client getClient(String cid) {
+        Client client = null;
+        Iterator iterator = getClients();
+
+        while (iterator.hasNext()) {
+            Client temp = (Client) iterator.next();
+
+            if (cid.equals(temp.getId())) {
+                client = temp;
+                break;
+            }
+        }
+
+        return client;
+    }
+
     public Product getProduct(String pid) {
         Product product = null;
         Iterator iterator = getProducts();
@@ -135,6 +170,23 @@ public class Warehouse implements Serializable {
 
         return manufacturer;
     }
+
+    public Supplier getSupplier(String mid, String pid) {
+        Supplier supplier = null;
+        Iterator iterator = getSuppliers();
+
+        while (iterator.hasNext()) {
+            Supplier temp = (Supplier) iterator.next();
+
+            if (mid.equals(temp.getManufacturer().getId()) &&
+            pid.equals(temp.getProduct().getProductId())) {
+                supplier = temp;
+                break;
+            }
+        }
+
+        return supplier;
+    }
     // End getters.
 
     // Iterators.
@@ -152,6 +204,10 @@ public class Warehouse implements Serializable {
 
     public Iterator<Supplier> getSuppliers() {
         return supplierList.getSuppliers();
+    }
+
+    public Iterator<Order> getOrders() {
+        return orderList.getOrders();
     }
     // End iterators.
 

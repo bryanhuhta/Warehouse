@@ -54,7 +54,7 @@ public class Order implements Serializable {
                 ", supplier: " + supplier +
                 ", client: " + client +
                 ", amount: " + amount +
-                ", filled: " + !isWaitlisted;
+                ", filled: " + !isWaitlisted + " ]";
     }
 
     public boolean equals(Order order) {

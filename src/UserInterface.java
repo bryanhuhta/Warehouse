@@ -3,12 +3,10 @@
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.ref.Cleaner;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import static java.lang.System.exit;
-import static java.lang.System.out;
 
 public class UserInterface {
     private static final int HELP                               = 0,
@@ -22,12 +20,13 @@ public class UserInterface {
                              LIST_PRODUCTS                      = 8,
                              LIST_MANUFACTURERS                 = 9,
                              LIST_SUPPLIERS                     = 10,
-                             LIST_CLIENTS_OUTSTANDING_BALANCE   = 11,
-                             GET_WAITLISTED_ORDERS_PRODUCT      = 12,
-                             GET_WAITLISTED_ORDERS_CLIENT       = 13,
-                             ACCEPT_CLIENT_PAYMENT              = 14,
-                             PLACE_CLIENT_ORDER                 = 15,
-                             EXIT                               = 16;
+                             LIST_ORDERS                        = 11,
+                             LIST_CLIENTS_OUTSTANDING_BALANCE   = 12,
+                             GET_WAITLISTED_ORDERS_PRODUCT      = 13,
+                             GET_WAITLISTED_ORDERS_CLIENT       = 14,
+                             ACCEPT_CLIENT_PAYMENT              = 15,
+                             PLACE_CLIENT_ORDER                 = 16,
+                             EXIT                               = 17;
 
     private static  UserInterface ui;
     private BufferedReader reader = new BufferedReader(
@@ -144,6 +143,10 @@ public class UserInterface {
                     listSuppliers();
                     break;
 
+                case LIST_ORDERS:
+                    listOrders();
+                    break;
+
                 case LIST_CLIENTS_OUTSTANDING_BALANCE:
                     listOutstandingBalances();
                     break;
@@ -185,6 +188,7 @@ public class UserInterface {
                 "[ " + LIST_PRODUCTS + " ] to list products\n" +
                 "[ " + LIST_MANUFACTURERS + " ] to list manufacturers\n" +
                 "[ " + LIST_SUPPLIERS + " ] to list suppliers\n" +
+                "[ " + LIST_ORDERS + " ] to list orders\n" +
                 "[ " + LIST_CLIENTS_OUTSTANDING_BALANCE + " ] " +
                     "to list clients with an outstanding balance\n" +
                 "[ " + GET_WAITLISTED_ORDERS_PRODUCT + " ] " +
@@ -403,6 +407,17 @@ public class UserInterface {
     }
 
     // 11.
+    private void listOrders() {
+        Iterator iterator = warehouse.getOrders();
+
+        while (iterator.hasNext()) {
+            Order temp = (Order) iterator.next();
+
+            System.out.println(temp);
+        }
+    }
+
+    // 12.
     private void listOutstandingBalances() {
         Iterator iterator = warehouse.getClients();
 
@@ -415,24 +430,84 @@ public class UserInterface {
         }
     }
 
-    // 12.
+    // 13.
     private void getProductWaitlist() {
 
     }
 
-    // 13.
+    // 14.
     private void getClientWaitlist() {
 
     }
 
-    // 14.
+    // 15.
     private void acceptClientPayment() {
 
     }
 
-    // 15.
+    // 16.
     private void placeOrder() {
-        
+        String mid = null;
+        String pid = null;
+        String cid = null;
+        int quantity = 0;
+        Order order = null;
+
+        // Collect cid.
+        do {
+            try {
+                System.out.print("Enter client id: ");
+                cid = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid input, try again.");
+                e.printStackTrace();
+            }
+        } while (cid == null);
+
+        // Collect mid and pid.
+        do {
+            try {
+                System.out.print("Enter manufacturer id: ");
+                mid = reader.readLine();
+
+                System.out.print("Enter product id: ");
+                pid = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid id(s), try again.");
+                e.printStackTrace();
+            }
+        } while (mid == null && pid == null);
+
+        // Collect the quantity.
+        do {
+            try {
+                System.out.print("Enter quantity: ");
+                quantity = Integer.parseInt(reader.readLine());
+
+                if (quantity < 1) {
+                    System.out.println("Invalid input, try again.");
+                }
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Invalid input, try again.");
+                quantity = 0;
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        } while (quantity < 1);
+
+        // Create order.
+        order = warehouse.addOrder(mid, pid, cid, quantity);
+        if (order == null) {
+            System.out.println("Cannot create order.");
+            return;
+        }
+
+        System.out.println("Created Order:\n" +
+                order);
     }
     // End commands.
 
