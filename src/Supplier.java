@@ -34,8 +34,14 @@ public class Supplier implements Serializable {
         return cost;
     }
 
-    public void addQuantity(int quantity) {
-        this.quantity += quantity;
+    public void updateQuantity(int quantity, boolean add) {
+        if (add) {
+            this.quantity += quantity;
+        }
+        else {
+            this.quantity -= quantity;
+        }
+
     }
 
     @Override

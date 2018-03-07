@@ -451,7 +451,9 @@ public class UserInterface {
         String pid = null;
         String cid = null;
         int quantity = 0;
+
         Order order = null;
+        Supplier supplier = null;
 
         // Collect cid.
         do {
@@ -506,11 +508,56 @@ public class UserInterface {
             return;
         }
 
-        System.out.println("Created Order:\n" +
-                order);
+        // Process order.
+        supplier = warehouse.getSupplier(mid, pid);
+        if (supplier == null) {
+            System.out.println("Cannot find supplier.");
+            return;
+        }
+
+        // Check if order should be waitlisted.
+        if (supplier.getQuantity() < quantity) {
+            // Check if some amount of the order can be filled.
+            if (supplier.getQuantity() > 0) {
+                // Fill a partial order.
+                order.updateQuantity(supplier.getQuantity());
+                supplier.updateQuantity(supplier.getQuantity(), false);
+
+
+                // Create new (waitlisted) order with remaining quantity.
+                int remainingOrderQuantity = quantity - order.getQuantity();
+                Order newOrder = warehouse.addOrder(mid, pid, cid,
+                        remainingOrderQuantity);
+
+                if (newOrder == null) {
+                    System.out.println("Could not create a waitlisted order.");
+                    return;
+                }
+
+                newOrder.setWaitlisted(true);
+
+                System.out.println("Filled order:\n" + order +
+                        "\nWaitlisted order:\n" + newOrder);
+            }
+            else {
+                // Waitlist the order outright. The supplier has no product in
+                // stock.
+                order.setWaitlisted(true);
+                System.out.println("Waitlisted order:\n" + order);
+            }
+        }
+        else {
+            // Fill an entire order.
+            supplier.updateQuantity(quantity, false);
+
+            // Flag order as filled.
+            order.setWaitlisted(false);
+            System.out.println("Filled order:\n" + order);
+        }
     }
     // End commands.
 
+    // Helper methods.
     private void retrieve() {
         try {
             Warehouse tempWarehouse = Warehouse.retrieve();
@@ -528,6 +575,7 @@ public class UserInterface {
             e.printStackTrace();
         }
     }
+    // End helper methods.
 
     public static void main(String args[]) {
         UserInterface.instance().process();

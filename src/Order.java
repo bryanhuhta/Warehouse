@@ -9,14 +9,16 @@ public class Order implements Serializable {
     private String id;
     private Supplier supplier;
     private Client client;
-    private int amount;
+    private int quantity;
+    private double cost;
     private boolean isWaitlisted;
 
-    public Order(Supplier supplier, Client client, int amount) {
+    public Order(Supplier supplier, Client client, int quantity) {
         this.id = ORDER_STRING + (OrderIdServer.instance()).getId();
         this.supplier = supplier;
         this.client = client;
-        this.amount = amount;
+        this.quantity = quantity;
+        this.cost = supplier.getCost() * this.quantity;
         this.isWaitlisted = false;
     }
 
@@ -32,12 +34,17 @@ public class Order implements Serializable {
         return client;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
+        this.cost = supplier.getCost() * this.quantity;
+    }
+
+    public double getCost() {
+        return cost;
     }
 
     public boolean isWaitlisted() {
@@ -53,7 +60,8 @@ public class Order implements Serializable {
         return "[ id: " + id +
                 ", supplier: " + supplier +
                 ", client: " + client +
-                ", amount: " + amount +
+                ", quantity: " + quantity +
+                ", cost: " + cost +
                 ", filled: " + !isWaitlisted + " ]";
     }
 
