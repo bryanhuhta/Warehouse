@@ -27,7 +27,8 @@ public class UserInterface {
                              ACCEPT_CLIENT_PAYMENT              = 15,
                              PLACE_CLIENT_ORDER                 = 16,
                              PLACE_MANUFACTURER_ORDER           = 17,
-                             EXIT                               = 18;
+                             PROCESS_MANUFACTURER_ORDER         = 18,
+                             EXIT                               = 19;
 
     private static  UserInterface ui;
     private BufferedReader reader = new BufferedReader(
@@ -171,6 +172,10 @@ public class UserInterface {
                 case PLACE_MANUFACTURER_ORDER:
                     placeManufacturerOrder();
                     break;
+
+                case PROCESS_MANUFACTURER_ORDER:
+                    processManufacturerOrder();
+                    break;
             }
         }
 
@@ -205,6 +210,8 @@ public class UserInterface {
                 "[ " + PLACE_CLIENT_ORDER + " ] to place a client order\n" +
                 "[ " + PLACE_MANUFACTURER_ORDER + " ] " +
                     "to place a manufacturer order\n" +
+                "[ " + PROCESS_MANUFACTURER_ORDER + " ] " +
+                    "to process a manufacturer order\n" +
                 "[ " + EXIT + " ] to exit";
 
         System.out.println(message);
@@ -465,7 +472,8 @@ public class UserInterface {
             Order temp = (Order) iterator.next();
 
             if (temp.isWaitlisted() &&
-                    temp.getSupplier().getProduct() == product) {
+                    temp.getSupplier().getProduct() == product &&
+                    temp.isClientOrder()) {
                 System.out.println(temp);
             }
         }
@@ -498,7 +506,8 @@ public class UserInterface {
         while (iterator.hasNext()) {
             Order temp = (Order) iterator.next();
 
-            if (temp.isWaitlisted() && temp.getClient() == client) {
+            if (temp.isWaitlisted() && temp.getClient() == client &&
+                    temp.isClientOrder()) {
                 System.out.println(temp);
             }
         }
@@ -712,8 +721,117 @@ public class UserInterface {
             System.out.println("Cannot create order.");
             return;
         }
+        order.setWaitlisted(true);
 
         System.out.println("Placed manufacturer order:\n" + order);
+    }
+
+    // 18.
+    private void processManufacturerOrder() {
+        String oid = null;
+        String response = null;
+        int quantity = 0;
+
+        Order manufacturerOrder = null;
+        Iterator orderIterator = warehouse.getOrders();
+
+        // Collect the oid.
+        do {
+            try {
+                System.out.print("Enter order id: ");
+                oid = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid id, try again.");
+                e.printStackTrace();
+            }
+        } while (oid == null);
+
+        // Find the order.
+        manufacturerOrder = warehouse.getOrder(oid);
+        if (manufacturerOrder == null) {
+            System.out.println("Order id does not exist.");
+            return;
+        }
+        else if (manufacturerOrder.isClientOrder()) {
+            System.out.println("Order is not a manufacturer order.");
+            return;
+        }
+        quantity = manufacturerOrder.getQuantity();
+
+        // Display order details.
+        System.out.println("Manufacturer order:\n" + manufacturerOrder);
+
+        // Get confirmation.
+        do {
+            try {
+                System.out.print("Confirm? (y/n): ");
+                response = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid response, try again.");
+                e.printStackTrace();
+            }
+        } while (response == null || !(response.equalsIgnoreCase("y")
+                                        || response.equalsIgnoreCase("n")));
+
+        // Fill waitlisted orders.
+        while (orderIterator.hasNext() && quantity > 0) {
+            Order waitlist = (Order) orderIterator.next();
+
+            // waitlist has the same supplier as the incoming order AND
+            // waitlist is waitlisted AND
+            // waitlist is a clientOrder.
+            if (waitlist.getSupplier() == manufacturerOrder.getSupplier() &&
+                    waitlist.isWaitlisted() && waitlist.isClientOrder()) {
+                // Check if order can only partially filled.
+                if (waitlist.getQuantity() > quantity) {
+                    // Fill a portion of the order.
+                    int remainingClientQuantity = waitlist.getQuantity() - quantity;
+                    waitlist.updateQuantity(quantity);
+                    waitlist.setWaitlisted(false);
+
+                    // Charge the client.
+                    waitlist.getClient().chargeAccount(
+                            -manufacturerOrder.getSupplier().getCost() * quantity);
+
+                    // Create a new order for the remaining quantity.
+                    Order newOrder = warehouse.addOrder(
+                            manufacturerOrder.getSupplier().getManufacturer().getId(),
+                            manufacturerOrder.getSupplier().getProduct().getProductId(),
+                            manufacturerOrder.getClient().getId(),
+                            remainingClientQuantity,
+                            true);
+                    newOrder.setWaitlisted(true);
+
+                    quantity = 0;
+
+                    System.out.println("Filled order:\n" + waitlist +
+                                        "Waitlisted order:\n" + newOrder);
+                }
+                else {
+                    // Order can be filled completely.
+                    waitlist.setWaitlisted(false);
+
+                    // Charge client.
+                    waitlist.getClient().chargeAccount(-manufacturerOrder.getCost());
+
+                    // Update remaining quantity.
+                    quantity -= waitlist.getQuantity();
+
+                    System.out.println("Filled order:\n" + waitlist);
+                }
+            }
+        }
+
+        manufacturerOrder.setWaitlisted(false);
+
+        // Add remaining to stock (if any).
+        if (quantity > 0) {
+            manufacturerOrder.getSupplier().updateQuantity(quantity, true);
+
+            System.out.println("Stocked supplier: " + manufacturerOrder.getSupplier());
+        }
     }
     // End commands.
 

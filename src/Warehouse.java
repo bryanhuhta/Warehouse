@@ -30,6 +30,7 @@ public class Warehouse implements Serializable {
             ClientIdServer.instance();
             ProductIdServer.instance();
             ManufacturerIdServer.instance();
+            OrderIdServer.instance();
             return warehouse = new Warehouse();
         }
         else {
@@ -108,9 +109,13 @@ public class Warehouse implements Serializable {
                           boolean isClientOrder) {
         Order order = null;
         Supplier supplier = getSupplier(mid, pid);
-        Client client = getClient(cid);
+        Client client = null;
 
-        if (supplier != null && client != null) {
+        if (isClientOrder) {
+            client = getClient(cid);
+        }
+
+        if (supplier != null && (client != null || !isClientOrder)) {
             order = new Order(supplier, client, quantity, isClientOrder);
 
             // Null order if it is not added to list.
@@ -188,6 +193,22 @@ public class Warehouse implements Serializable {
 
         return supplier;
     }
+
+    public Order getOrder(String oid) {
+        Order order = null;
+        Iterator iterator = getOrders();
+
+        while (iterator.hasNext()) {
+            Order temp = (Order) iterator.next();
+
+            if (oid.equals(temp.getId())) {
+                order = temp;
+                break;
+            }
+        }
+
+        return order;
+    }
     // End getters.
 
     // Iterators.
@@ -222,6 +243,7 @@ public class Warehouse implements Serializable {
             ClientIdServer.retrieve(inputStream);
             ProductIdServer.retrieve(inputStream);
             ManufacturerIdServer.retrieve(inputStream);
+            OrderIdServer.retrieve(inputStream);
 
             return warehouse;
         }
@@ -240,6 +262,7 @@ public class Warehouse implements Serializable {
             outputStream.writeObject(ClientIdServer.instance());
             outputStream.writeObject(ProductIdServer.instance());
             outputStream.writeObject(ManufacturerIdServer.instance());
+            outputStream.writeObject(OrderIdServer.instance());
 
             return true;
         }
