@@ -26,7 +26,8 @@ public class UserInterface {
                              GET_WAITLISTED_ORDERS_CLIENT       = 14,
                              ACCEPT_CLIENT_PAYMENT              = 15,
                              PLACE_CLIENT_ORDER                 = 16,
-                             EXIT                               = 17;
+                             PLACE_MANUFACTURER_ORDER           = 17,
+                             EXIT                               = 18;
 
     private static  UserInterface ui;
     private BufferedReader reader = new BufferedReader(
@@ -164,7 +165,11 @@ public class UserInterface {
                     break;
 
                 case PLACE_CLIENT_ORDER:
-                    placeOrder();
+                    placeClientOrder();
+                    break;
+
+                case PLACE_MANUFACTURER_ORDER:
+                    placeManufacturerOrder();
                     break;
             }
         }
@@ -198,6 +203,8 @@ public class UserInterface {
                 "[ " + ACCEPT_CLIENT_PAYMENT + " ] " +
                     "to accept a client payment\n" +
                 "[ " + PLACE_CLIENT_ORDER + " ] to place a client order\n" +
+                "[ " + PLACE_MANUFACTURER_ORDER + " ] " +
+                    "to place a manufacturer order\n" +
                 "[ " + EXIT + " ] to exit";
 
         System.out.println(message);
@@ -545,7 +552,7 @@ public class UserInterface {
     }
 
     // 16.
-    private void placeOrder() {
+    private void placeClientOrder() {
         String mid = null;
         String pid = null;
         String cid = null;
@@ -601,7 +608,7 @@ public class UserInterface {
         } while (quantity < 1);
 
         // Create order.
-        order = warehouse.addOrder(mid, pid, cid, quantity);
+        order = warehouse.addOrder(mid, pid, cid, quantity, true);
         if (order == null) {
             System.out.println("Cannot create order.");
             return;
@@ -628,7 +635,7 @@ public class UserInterface {
                 // Create new (waitlisted) order with remaining quantity.
                 int remainingOrderQuantity = quantity - order.getQuantity();
                 Order newOrder = warehouse.addOrder(mid, pid, cid,
-                        remainingOrderQuantity);
+                        remainingOrderQuantity, true);
 
                 if (newOrder == null) {
                     System.out.println("Could not create a waitlisted order.");
@@ -637,14 +644,14 @@ public class UserInterface {
 
                 newOrder.setWaitlisted(true);
 
-                System.out.println("Filled order:\n" + order +
-                        "\nWaitlisted order:\n" + newOrder);
+                System.out.println("Filled client order:\n" + order +
+                        "\nWaitlisted client order:\n" + newOrder);
             }
             else {
                 // Waitlist the order outright. The supplier has no product in
                 // stock.
                 order.setWaitlisted(true);
-                System.out.println("Waitlisted order:\n" + order);
+                System.out.println("Waitlisted client order:\n" + order);
             }
         }
         else {
@@ -656,8 +663,57 @@ public class UserInterface {
 
             // Flag order as filled.
             order.setWaitlisted(false);
-            System.out.println("Filled order:\n" + order);
+            System.out.println("Filled client order:\n" + order);
         }
+    }
+
+    // 17.
+    private void placeManufacturerOrder() {
+        String mid = null;
+        String pid = null;
+        int quantity = -1;
+
+        Supplier supplier = null;
+        Order order = null;
+
+        // Collect mid and pid.
+        do {
+            try {
+                System.out.print("Enter manufacturer id: ");
+                mid = reader.readLine();
+
+                System.out.print("Enter product id: ");
+                pid = reader.readLine();
+            }
+            catch (Exception e) {
+                System.out.println("Invalid id(s), try again.");
+                e.printStackTrace();
+            }
+        } while (mid == null &&  pid == null);
+
+        // Collect quantity.
+        do {
+            try {
+                System.out.print("Enter quantity: ");
+                quantity = Integer.parseInt(reader.readLine());
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Must be a number.");
+                quantity = -1;
+            }
+            catch (Exception e) {
+                System.out.println("Invalid quantity, try again.");
+                e.printStackTrace();
+            }
+        } while (quantity < 0);
+
+        order = warehouse.addOrder(mid, pid, null, quantity, false);
+        if (order == null) {
+            System.out.println("Cannot create order.");
+            return;
+        }
+
+        System.out.println("Placed manufacturer order:\n" + order);
     }
     // End commands.
 

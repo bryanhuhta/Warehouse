@@ -104,13 +104,14 @@ public class Warehouse implements Serializable {
         return deleted;
     }
 
-    public Order addOrder(String mid, String pid, String cid, int quantity) {
+    public Order addOrder(String mid, String pid, String cid, int quantity,
+                          boolean isClientOrder) {
         Order order = null;
         Supplier supplier = getSupplier(mid, pid);
         Client client = getClient(cid);
 
         if (supplier != null && client != null) {
-            order = new Order(supplier, client, quantity);
+            order = new Order(supplier, client, quantity, isClientOrder);
 
             // Null order if it is not added to list.
             if (!orderList.addOrder(order)) {

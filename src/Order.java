@@ -14,14 +14,17 @@ public class Order implements Serializable {
     private int quantity;
     private double cost;
     private boolean isWaitlisted;
+    private boolean isClientOrder;
 
-    public Order(Supplier supplier, Client client, int quantity) {
+    public Order(Supplier supplier, Client client, int quantity,
+                 boolean isClientOrder) {
         this.id = ORDER_STRING + (OrderIdServer.instance()).getId();
         this.supplier = supplier;
         this.client = client;
         this.quantity = quantity;
         this.cost = supplier.getCost() * this.quantity;
         this.isWaitlisted = false;
+        this.isClientOrder = isClientOrder;
     }
 
     public String getId() {
@@ -57,6 +60,10 @@ public class Order implements Serializable {
         isWaitlisted = waitlisted;
     }
 
+    public boolean isClientOrder() {
+        return isClientOrder;
+    }
+
     @Override
     public String toString() {
         DecimalFormat decimalFormat = new DecimalFormat("##.##");
@@ -67,7 +74,8 @@ public class Order implements Serializable {
                 ", client: " + client +
                 ", quantity: " + quantity +
                 ", cost: " + decimalFormat.format(cost) +
-                ", filled: " + !isWaitlisted + " ]";
+                ", filled: " + !isWaitlisted +
+                ", client order: " + isClientOrder + " ]";
     }
 
     public boolean equals(Order order) {
