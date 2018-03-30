@@ -9,28 +9,28 @@ import java.util.StringTokenizer;
 import static java.lang.System.exit;
 
 public class UserInterface {
-    private static final int HELP                               = 0,
-                             SAVE                               = 1,
-                             ADD_CLIENT                         = 2,
-                             ADD_PRODUCT                        = 3,
-                             ADD_MANUFACTURERS                  = 4,
-                             ADD_SUPPLIER                       = 5,
-                             DELETE_SUPPLIER                    = 6,
-                             LIST_CLIENTS                       = 7,
-                             LIST_PRODUCTS                      = 8,
-                             LIST_MANUFACTURERS                 = 9,
-                             LIST_SUPPLIERS                     = 10,
-                             LIST_ORDERS                        = 11,
-                             LIST_CLIENTS_OUTSTANDING_BALANCE   = 12,
-                             GET_WAITLISTED_ORDERS_PRODUCT      = 13,
-                             GET_WAITLISTED_ORDERS_CLIENT       = 14,
-                             ACCEPT_CLIENT_PAYMENT              = 15,
-                             PLACE_CLIENT_ORDER                 = 16,
-                             PLACE_MANUFACTURER_ORDER           = 17,
-                             PROCESS_MANUFACTURER_ORDER         = 18,
-                             EXIT                               = 19;
+    private static final int HELP = 0,
+            SAVE = 1,
+            ADD_CLIENT = 2,
+            ADD_PRODUCT = 3,
+            ADD_MANUFACTURERS = 4,
+            ADD_SUPPLIER = 5,
+            DELETE_SUPPLIER = 6,
+            LIST_CLIENTS = 7,
+            LIST_PRODUCTS = 8,
+            LIST_MANUFACTURERS = 9,
+            LIST_SUPPLIERS = 10,
+            LIST_ORDERS = 11,
+            LIST_CLIENTS_OUTSTANDING_BALANCE = 12,
+            GET_WAITLISTED_ORDERS_PRODUCT = 13,
+            GET_WAITLISTED_ORDERS_CLIENT = 14,
+            ACCEPT_CLIENT_PAYMENT = 15,
+            PLACE_CLIENT_ORDER = 16,
+            PLACE_MANUFACTURER_ORDER = 17,
+            PROCESS_MANUFACTURER_ORDER = 18,
+            EXIT = 19;
 
-    private static  UserInterface ui;
+    private static UserInterface ui;
     private BufferedReader reader = new BufferedReader(
             new InputStreamReader(System.in));
     private static Warehouse warehouse;
@@ -39,8 +39,7 @@ public class UserInterface {
     private UserInterface() {
         if (response("Load saved session?")) {
             retrieve();
-        }
-        else {
+        } else {
             warehouse = Warehouse.instance();
         }
     }
@@ -48,8 +47,7 @@ public class UserInterface {
     public static UserInterface instance() {
         if (ui == null) {
             return ui = new UserInterface();
-        }
-        else {
+        } else {
             return ui;
         }
     }
@@ -73,8 +71,7 @@ public class UserInterface {
                 if (tokenizer.hasMoreTokens()) {
                     return tokenizer.nextToken();
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 exit(2);
             }
         } while (true);
@@ -88,8 +85,7 @@ public class UserInterface {
                 if (value <= EXIT && value >= HELP) {
                     return value;
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Command must be a number.");
             }
         } while (true);
@@ -141,7 +137,7 @@ public class UserInterface {
                     listManufacturers();
                     break;
 
-                case  LIST_SUPPLIERS:
+                case LIST_SUPPLIERS:
                     listSuppliers();
                     break;
 
@@ -200,18 +196,18 @@ public class UserInterface {
                 "[ " + LIST_SUPPLIERS + " ] to list suppliers\n" +
                 "[ " + LIST_ORDERS + " ] to list orders\n" +
                 "[ " + LIST_CLIENTS_OUTSTANDING_BALANCE + " ] " +
-                    "to list clients with an outstanding balance\n" +
+                "to list clients with an outstanding balance\n" +
                 "[ " + GET_WAITLISTED_ORDERS_PRODUCT + " ] " +
-                    "to list waitlisted orders for a product\n" +
+                "to list waitlisted orders for a product\n" +
                 "[ " + GET_WAITLISTED_ORDERS_CLIENT + " ] " +
-                    "to list waitlisted orders for a client\n" +
+                "to list waitlisted orders for a client\n" +
                 "[ " + ACCEPT_CLIENT_PAYMENT + " ] " +
-                    "to accept a client payment\n" +
+                "to accept a client payment\n" +
                 "[ " + PLACE_CLIENT_ORDER + " ] to place a client order\n" +
                 "[ " + PLACE_MANUFACTURER_ORDER + " ] " +
-                    "to place a manufacturer order\n" +
+                "to place a manufacturer order\n" +
                 "[ " + PROCESS_MANUFACTURER_ORDER + " ] " +
-                    "to process a manufacturer order\n" +
+                "to process a manufacturer order\n" +
                 "[ " + EXIT + " ] to exit";
 
         System.out.println(message);
@@ -221,8 +217,7 @@ public class UserInterface {
     private void save() {
         if (warehouse.save()) {
             System.out.println("Warehouse saved to disk");
-        }
-        else {
+        } else {
             System.out.println("Could not save to disk");
         }
     }
@@ -233,8 +228,7 @@ public class UserInterface {
 
         if (client != null) {
             System.out.println("Added: " + client);
-        }
-        else {
+        } else {
             System.out.println("Cannot add a client.");
         }
     }
@@ -284,8 +278,7 @@ public class UserInterface {
             try {
                 System.out.print("Enter a manufacturer name: ");
                 name = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid name, try again.");
                 e.printStackTrace();
             }
@@ -294,8 +287,7 @@ public class UserInterface {
         manufacturer = warehouse.addManufacturer(name);
         if (manufacturer != null) {
             System.out.println("Added: " + manufacturer);
-        }
-        else {
+        } else {
             System.out.println("Cannot add manufacturer.");
         }
     }
@@ -316,8 +308,7 @@ public class UserInterface {
 
                 System.out.print("Enter a product id: ");
                 pid = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid id(s), try again.");
                 e.printStackTrace();
             }
@@ -331,8 +322,7 @@ public class UserInterface {
 
                 System.out.print("Enter cost: ");
                 cost = Double.parseDouble(reader.readLine());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid input, try again.");
                 e.printStackTrace();
             }
@@ -342,8 +332,7 @@ public class UserInterface {
         supplier = warehouse.addSupplier(mid, pid, quantity, cost);
         if (supplier != null) {
             System.out.println("Added:\n" + supplier);
-        }
-        else {
+        } else {
             System.out.println("Cannot add supplier.");
         }
     }
@@ -361,8 +350,7 @@ public class UserInterface {
 
                 System.out.print("Enter a product id: ");
                 pid = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid id(s), try again.");
                 e.printStackTrace();
             }
@@ -370,8 +358,7 @@ public class UserInterface {
 
         if (warehouse.deleteSupplier(mid, pid)) {
             System.out.println("Deleted supplier.");
-        }
-        else {
+        } else {
             System.out.println("Cannot delete supplier.");
         }
     }
@@ -388,7 +375,7 @@ public class UserInterface {
     }
 
     // 8.
-    private void listProducts() {
+    public void listProducts() {
         Iterator iterator = warehouse.getProducts();
 
         while (iterator.hasNext()) {
@@ -453,8 +440,7 @@ public class UserInterface {
             try {
                 System.out.print("Enter product id: ");
                 pid = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid product id, try again.");
                 e.printStackTrace();
             }
@@ -488,8 +474,7 @@ public class UserInterface {
             try {
                 System.out.print("Enter client id: ");
                 cid = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid client id, try again.");
                 e.printStackTrace();
             }
@@ -514,7 +499,7 @@ public class UserInterface {
     }
 
     // 15.
-    private void acceptClientPayment() {
+    public void acceptClientPayment() {
         String cid = null;
         double payment = -1;
         Client client = null;
@@ -524,8 +509,7 @@ public class UserInterface {
             try {
                 System.out.print("Enter client id: ");
                 cid = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid client id, try again.");
                 e.printStackTrace();
             }
@@ -536,12 +520,10 @@ public class UserInterface {
             try {
                 System.out.print("Enter payment: ");
                 payment = Double.parseDouble(reader.readLine());
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid, enter a number.");
                 payment = -1;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid, enter a number.");
                 payment = -1;
                 e.printStackTrace();
@@ -561,7 +543,7 @@ public class UserInterface {
     }
 
     // 16.
-    private void placeClientOrder() {
+    public void placeClientOrder() {
         String mid = null;
         String pid = null;
         String cid = null;
@@ -575,8 +557,7 @@ public class UserInterface {
             try {
                 System.out.print("Enter client id: ");
                 cid = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid input, try again.");
                 e.printStackTrace();
             }
@@ -590,8 +571,7 @@ public class UserInterface {
 
                 System.out.print("Enter product id: ");
                 pid = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid id(s), try again.");
                 e.printStackTrace();
             }
@@ -606,12 +586,10 @@ public class UserInterface {
                 if (quantity < 1) {
                     System.out.println("Invalid input, try again.");
                 }
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid input, try again.");
                 quantity = 0;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         } while (quantity < 1);
@@ -655,15 +633,13 @@ public class UserInterface {
 
                 System.out.println("Filled client order:\n" + order +
                         "\nWaitlisted client order:\n" + newOrder);
-            }
-            else {
+            } else {
                 // Waitlist the order outright. The supplier has no product in
                 // stock.
                 order.setWaitlisted(true);
                 System.out.println("Waitlisted client order:\n" + order);
             }
-        }
-        else {
+        } else {
             // Fill an entire order.
             supplier.updateQuantity(quantity, false);
 
@@ -693,24 +669,21 @@ public class UserInterface {
 
                 System.out.print("Enter product id: ");
                 pid = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid id(s), try again.");
                 e.printStackTrace();
             }
-        } while (mid == null &&  pid == null);
+        } while (mid == null && pid == null);
 
         // Collect quantity.
         do {
             try {
                 System.out.print("Enter quantity: ");
                 quantity = Integer.parseInt(reader.readLine());
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.out.println("Must be a number.");
                 quantity = -1;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid quantity, try again.");
                 e.printStackTrace();
             }
@@ -740,8 +713,7 @@ public class UserInterface {
             try {
                 System.out.print("Enter order id: ");
                 oid = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid id, try again.");
                 e.printStackTrace();
             }
@@ -752,8 +724,7 @@ public class UserInterface {
         if (manufacturerOrder == null) {
             System.out.println("Order id does not exist.");
             return;
-        }
-        else if (manufacturerOrder.isClientOrder()) {
+        } else if (manufacturerOrder.isClientOrder()) {
             System.out.println("Order is not a manufacturer order.");
             return;
         }
@@ -767,13 +738,12 @@ public class UserInterface {
             try {
                 System.out.print("Confirm? (y/n): ");
                 response = reader.readLine();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Invalid response, try again.");
                 e.printStackTrace();
             }
         } while (response == null || !(response.equalsIgnoreCase("y")
-                                        || response.equalsIgnoreCase("n")));
+                || response.equalsIgnoreCase("n")));
 
         // Fill waitlisted orders.
         while (orderIterator.hasNext() && quantity > 0) {
@@ -807,9 +777,8 @@ public class UserInterface {
                     quantity = 0;
 
                     System.out.println("Filled order:\n" + waitlist +
-                                        "Waitlisted order:\n" + newOrder);
-                }
-                else {
+                            "Waitlisted order:\n" + newOrder);
+                } else {
                     // Order can be filled completely.
                     waitlist.setWaitlisted(false);
 
@@ -833,6 +802,50 @@ public class UserInterface {
             System.out.println("Stocked supplier: " + manufacturerOrder.getSupplier());
         }
     }
+
+    public void listOrdersByClient() {
+        String cid = null;
+
+        // Collect cid.
+        do {
+            try {
+                System.out.print("Enter client id: ");
+                cid = reader.readLine();
+            } catch (Exception e) {
+                System.out.println("Invalid input, try again.");
+                e.printStackTrace();
+            }
+        } while (cid == null);
+
+        Iterator iterator = warehouse.getOrders();
+
+        while (iterator.hasNext()) {
+            Order temp = (Order) iterator.next();
+
+            if (temp.getClient().getId().equals(cid)) {
+                System.out.println(temp);
+            }
+        }
+    }
+
+    public void getClientBalance() {
+        String cid = null;
+
+        // Collect cid.
+        do {
+            try {
+                System.out.print("Enter client id: ");
+                cid = reader.readLine();
+            } catch (Exception e) {
+                System.out.println("Invalid input, try again.");
+                e.printStackTrace();
+            }
+        } while (cid == null);
+
+        Client client = warehouse.getClient(cid);
+
+        System.out.println("Balance: " + client.getBalance());
+    }
     // End commands.
 
     // Helper methods.
@@ -843,19 +856,13 @@ public class UserInterface {
             if (tempWarehouse != null) {
                 System.out.println("Warehouse loaded from  disk");
                 warehouse = tempWarehouse;
-            }
-            else {
+            } else {
                 System.out.println("File not on disk; creating new file");
                 warehouse = Warehouse.instance();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
     // End helper methods.
-
-    public static void main(String args[]) {
-        UserInterface.instance().process();
-    }
 }

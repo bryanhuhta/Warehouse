@@ -56,6 +56,10 @@ public class WarehouseUiContext extends WarehouseContext {
         return userId;
     }
 
+    public static Warehouse getWarehouse() {
+        return warehouse;
+    }
+
     @Override
     protected void terminate() {
         if (yesOrNo("Save to disk?")) {

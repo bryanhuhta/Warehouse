@@ -12,9 +12,6 @@ public class LoginState extends WarehouseState {
     private WarehouseUiContext context;
     private static LoginState loginState;
 
-    private BufferedReader reader =
-            new BufferedReader(new InputStreamReader(System.in));
-
     private LoginState() {
         super();
         context.instance().addState(loginState);
@@ -37,14 +34,14 @@ public class LoginState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu = " [ " + CLIENT + " ] to login as client\n" +
+        String menu = " [ " + EXIT + " ] to exit\n" +
+                " [ " + CLIENT + " ] to login as client\n" +
                 " [ " + SALES + " ] to login as sales\n" +
-                " [ " + MANAGER + " ] to login as manager\n" +
-                " [ " + EXIT + " ] to exit\n";
+                " [ " + MANAGER + " ] to login as manager\n";
 
         do {
             System.out.println(menu);
-            command = getCommand();
+            command = getCommand(EXIT, MANAGER);
 
             switch (command) {
                 case CLIENT:
@@ -63,34 +60,5 @@ public class LoginState extends WarehouseState {
     private void login(int code) {
         context.setCurrentUser(code);
         context.changeState(code);
-    }
-
-    private String getToken(String prompt) {
-        do {
-            try {
-                System.out.println(prompt);
-                String line = reader.readLine();
-                StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
-                if (tokenizer.hasMoreTokens()) {
-                    return tokenizer.nextToken();
-                }
-            } catch (IOException ioe) {
-                System.exit(0);
-            }
-        } while (true);
-    }
-
-    private int getCommand() {
-        do {
-            try {
-                int value = Integer.parseInt(getToken("Enter command:" ));
-                if (value >= EXIT && value <= CLIENT) {
-                    return value;
-                }
-            }
-            catch (NumberFormatException nfe) {
-                System.out.println("Enter a number");
-            }
-        } while (true);
     }
 }
