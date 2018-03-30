@@ -223,7 +223,7 @@ public class UserInterface {
     }
 
     // 2.
-    private void addClient() {
+    public void addClient() {
         Client client = warehouse.addClient();
 
         if (client != null) {
@@ -234,7 +234,7 @@ public class UserInterface {
     }
 
     // 3.
-    private void addProduct() {
+    public void addProduct() {
         String name = null;
         Product product = null;
         int count = 0;
@@ -386,7 +386,7 @@ public class UserInterface {
     }
 
     // 9.
-    private void listManufacturers() {
+    public void listManufacturers() {
         Iterator iterator = warehouse.getManufacturers();
 
         while (iterator.hasNext()) {
