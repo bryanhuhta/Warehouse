@@ -8,12 +8,10 @@ public abstract class WarehouseContext {
     private int[][] transitions;
     private int currentState;
 
-    private WarehouseContext(int size) {
+    protected WarehouseContext(int size) {
         transitions = new int[size][size];
         currentState = 0;
     }
-
-    public abstract WarehouseContext instance();
 
     public boolean addState(WarehouseState state) {
          return this.states.add(state);
