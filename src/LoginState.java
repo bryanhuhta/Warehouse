@@ -1,25 +1,13 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-
 public class LoginState extends WarehouseState {
     private static final int EXIT       = 0,
                              CLIENT     = 1,
                              SALES      = 2,
                              MANAGER    = 3;
 
-    private WarehouseUiContext context;
     private static LoginState loginState;
 
     private LoginState() {
         super();
-        context.instance().addState(loginState);
-
-        // Build transition matrix.
-        for (int i = 0; i < context.NUM_STATES; ++i) {
-            context.instance().addTransition(0, i, 1);
-        }
     }
 
     public static LoginState instance() {
@@ -55,10 +43,13 @@ public class LoginState extends WarehouseState {
                     break;
             }
         } while (command != EXIT);
+
+        // Exit application.
+        WarehouseUiContext.instance().changeState(0);
     }
 
     private void login(int code) {
-        context.setCurrentUser(code);
-        context.changeState(code);
+        WarehouseUiContext.instance().setCurrentUser(code);
+        WarehouseUiContext.instance().changeState(code);
     }
 }

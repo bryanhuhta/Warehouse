@@ -11,12 +11,6 @@ public class SalesState extends WarehouseState {
 
     private SalesState() {
         super();
-        context.instance().addState(salesState);
-
-        // Build transition matrix.
-        for (int i = 0; i < context.NUM_STATES; ++i) {
-            context.instance().addTransition(0, i, 1);
-        }
     }
 
     public static SalesState instance() {
@@ -68,26 +62,51 @@ public class SalesState extends WarehouseState {
                     break;
             }
         } while (command != LOGOUT);
+
+        logout();
     }
 
     private void becomeClient() {
-        System.out.println("Become a client");
+        System.out.println("sales: Become a client");
     }
 
     private void addClient() {
-        UserInterface.instance().addClient();
+        System.out.println("sales: add client");
+        //UserInterface.instance().addClient();
     }
 
-
     private void addProduct() {
-        UserInterface.instance().addProduct();
+        System.out.println("sales: add product");
+        //UserInterface.instance().addProduct();
     }
 
     private void listProducts() {
-        UserInterface.instance().listProducts();
+        System.out.println("sales: list products");
+        //UserInterface.instance().listProducts();
     }
 
     private void listManufacturers() {
-        UserInterface.instance().listManufacturers();
+        System.out.println("sales: list manufacturers");
+        //UserInterface.instance().listManufacturers();
+    }
+
+    private void logout() {
+        int nextState = 0;
+
+        switch (WarehouseUiContext.instance().getCurrentUser()) {
+            case 2:
+                // User is sales, logout.
+                nextState = 0;
+                WarehouseUiContext.instance()
+                        .setCurrentUser(WarehouseUiContext.instance().NONE);
+                break;
+
+            case 3:
+                // User is manager, go back to manager.
+                nextState = 3;
+                break;
+        }
+
+        WarehouseUiContext.instance().changeState(nextState);
     }
 }

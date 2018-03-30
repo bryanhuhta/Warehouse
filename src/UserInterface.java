@@ -270,7 +270,7 @@ public class UserInterface {
     }
 
     // 4.
-    private void addManufacturers() {
+    public void addManufacturers() {
         String name = null;
         Manufacturer manufacturer = null;
 

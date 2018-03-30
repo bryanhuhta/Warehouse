@@ -11,17 +11,11 @@ public class ClientState extends WarehouseState {
 
     private ClientState() {
         super();
-        context.instance().addState(clientState);
-
-        // Build transition matrix.
-        for (int i = 0; i < context.NUM_STATES; ++i) {
-            context.instance().addTransition(0, i, 1);
-        }
     }
 
     public static ClientState instance() {
         if (clientState == null) {
-             clientState = new ClientState();
+            clientState = new ClientState();
         }
 
         return clientState;
@@ -68,26 +62,57 @@ public class ClientState extends WarehouseState {
                     break;
             }
         } while (command != LOGOUT);
+
+        logout();
     }
 
     private void listProducts() {
-        UserInterface.instance().listProducts();
+        System.out.println("client: List products");
+        // UserInterface.instance().listProducts();
     }
 
     private void placeOrder() {
-        UserInterface.instance().placeClientOrder();
+        System.out.println("client: Place Order");
+        //UserInterface.instance().placeClientOrder();
     }
 
     private void listOrders() {
-        UserInterface.instance().listOrdersByClient();
+        System.out.println("client: List orders");
+        //UserInterface.instance().listOrdersByClient();
     }
 
     private void getBalance() {
-        UserInterface.instance().getClientBalance();
+        System.out.println("client: get balance");
+        //UserInterface.instance().getClientBalance();
     }
 
     private void makePayment() {
-        UserInterface.instance().acceptClientPayment();
+        System.out.println("client: make payment");
+        //UserInterface.instance().acceptClientPayment();
     }
 
+    private void logout() {
+        int nextState = 0;
+
+        switch (WarehouseUiContext.instance().getCurrentUser()) {
+            case 1:
+                // User is client, go back to login.
+                nextState = 0;
+                WarehouseUiContext.instance()
+                        .setCurrentUser(WarehouseUiContext.instance().NONE);
+                break;
+
+            case 2:
+                // User is sales, go back to sales.
+                nextState = 2;
+                break;
+
+            case 3:
+                // User is manager, go back to manager.
+                nextState = 3;
+                break;
+        }
+
+        WarehouseUiContext.instance().changeState(nextState);
+    }
 }

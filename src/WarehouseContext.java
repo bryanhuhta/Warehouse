@@ -1,20 +1,21 @@
-import java.util.List;
-
 public abstract class WarehouseContext {
     private static final int ERROR_CODE = -2,
                              EXIT_CODE  = -1;
 
-    private List<WarehouseState> states;
+    private WarehouseState[] states;
     private int[][] transitions;
     private int currentState;
+    private int stateCount;
 
     protected WarehouseContext(int size) {
         transitions = new int[size][size];
+        states = new WarehouseState[size];
         currentState = 0;
+        stateCount = 0;
     }
 
-    public boolean addState(WarehouseState state) {
-         return this.states.add(state);
+    public void addState(WarehouseState state) {
+        states[stateCount++] = state;
     }
 
     public boolean addTransition(int initialState, int finalState, int exitCode) {
@@ -33,20 +34,20 @@ public abstract class WarehouseContext {
     public void changeState(int transition) {
         currentState = transitions[currentState][transition];
 
-        if (currentState < ERROR_CODE) {
+        if (currentState == ERROR_CODE) {
             System.out.println("Error: invalid state");
             terminate();
         }
-        if (currentState < EXIT_CODE) {
+        if (currentState == EXIT_CODE) {
             terminate();
         }
 
-        states.get(currentState).run();
+        states[currentState].run();
     }
 
     public void start() {
         currentState = 0;
-        states.get(currentState).run();
+        states[currentState].run();
     }
 
     protected abstract void terminate();

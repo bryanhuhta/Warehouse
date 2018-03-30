@@ -5,10 +5,10 @@ import java.util.StringTokenizer;
 
 public class WarehouseUiContext extends WarehouseContext {
     public static final int NUM_STATES = 4;
-    private static final int NONE       = 0,
-                             CLIENT     = 1,
-                             SALES      = 2,
-                             MANAGER    = 3;
+    public static final int NONE       = 0,
+                            CLIENT     = 1,
+                            SALES      = 2,
+                            MANAGER    = 3;
 
     private static WarehouseUiContext context;
     private static Warehouse warehouse;
@@ -30,11 +30,35 @@ public class WarehouseUiContext extends WarehouseContext {
         }
 
         currentUser = NONE;
+
+        addState(LoginState.instance());
+        addTransition(0, 0, -1);
+        for (int i = 1; i < NUM_STATES; ++i) {
+            addTransition(0, i, i);
+        }
+
+        addState(ClientState.instance());
+        for (int i = 0; i < NUM_STATES; ++i) {
+            addTransition(1, i, i);
+        }
+
+        addState(SalesState.instance());
+        for (int i = 0; i < NUM_STATES; ++i) {
+            addTransition(2, i, i);
+        }
+
+
+        addState(ManagerState.instance());
+        for (int i = 0; i < NUM_STATES; ++i) {
+            addTransition(3, i, i);
+        }
+
     }
 
-    public WarehouseUiContext instance() {
+    public static WarehouseUiContext instance() {
         if (context == null) {
             context = new WarehouseUiContext();
+            buildFsm();
         }
 
         return context;
@@ -75,6 +99,10 @@ public class WarehouseUiContext extends WarehouseContext {
         System.exit(0);
     }
 
+    private static void buildFsm() {
+
+    }
+
     private void retrieve() {
         try {
             Warehouse tempWarehouse = Warehouse.retrieve();
@@ -110,9 +138,10 @@ public class WarehouseUiContext extends WarehouseContext {
 
     private boolean yesOrNo(String prompt) {
         String more = getToken(prompt + " (Y|y)[es] or anything else for no");
-        if (more.charAt(0) != 'y' && more.charAt(0) != 'Y') {
-            return false;
-        }
-        return true;
+        return (more.charAt(0) != 'y' && more.charAt(0) != 'Y');
+    }
+
+    public static void main(String[] args) {
+        WarehouseUiContext.instance().start();
     }
 }
