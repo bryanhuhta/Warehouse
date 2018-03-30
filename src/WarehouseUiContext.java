@@ -5,20 +5,44 @@ import java.util.StringTokenizer;
 
 public class WarehouseUiContext extends WarehouseContext {
     private static final int NUM_STATES = 4;
+    private static final int NONE       = 0,
+                             CLIENT     = 1,
+                             SALES      = 2,
+                             MANAGER    = 3;
+
     private static WarehouseUiContext context;
     private static Warehouse warehouse;
+
+    private int currentUser;
+    private String userId;
 
     private BufferedReader reader =
             new BufferedReader(new InputStreamReader(System.in));
 
     private WarehouseUiContext() {
         super(NUM_STATES);
+
         if (yesOrNo("Load from disk?")) {
             retrieve();
         }
         else {
             warehouse = Warehouse.instance();
         }
+
+        // Add states.
+        addState(LoginState.instance());
+        addState(ClientState.instance());
+        addState(SalesState.instance());
+        addState(ManagerState.instance());
+
+        // Build transition matrix.
+        for (int i = 0; i < NUM_STATES; ++i) {
+            for (int j = 0; j < NUM_STATES; ++j) {
+                addTransition(i, j, 1);
+            }
+        }
+
+        currentUser = NONE;
     }
 
     public WarehouseUiContext instance() {
@@ -27,6 +51,22 @@ public class WarehouseUiContext extends WarehouseContext {
         }
 
         return context;
+    }
+
+    public void setCurrentUser(int user) {
+        currentUser = user;
+    }
+
+    public int getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setUserId(String uid) {
+        userId = uid;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     @Override
