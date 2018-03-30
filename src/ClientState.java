@@ -1,5 +1,3 @@
-import java.util.Iterator;
-
 public class ClientState extends WarehouseState {
     private static final int LOGOUT         = 0,
                              LIST_PRODUCTS  = 1,
