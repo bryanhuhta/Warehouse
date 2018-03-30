@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class WarehouseUiContext extends WarehouseContext {
-    private static final int NUM_STATES = 4;
+    public static final int NUM_STATES = 4;
     private static final int NONE       = 0,
                              CLIENT     = 1,
                              SALES      = 2,
@@ -27,19 +27,6 @@ public class WarehouseUiContext extends WarehouseContext {
         }
         else {
             warehouse = Warehouse.instance();
-        }
-
-        // Add states.
-        addState(LoginState.instance());
-        addState(ClientState.instance());
-        addState(SalesState.instance());
-        addState(ManagerState.instance());
-
-        // Build transition matrix.
-        for (int i = 0; i < NUM_STATES; ++i) {
-            for (int j = 0; j < NUM_STATES; ++j) {
-                addTransition(i, j, 1);
-            }
         }
 
         currentUser = NONE;
