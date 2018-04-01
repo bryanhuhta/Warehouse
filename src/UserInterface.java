@@ -842,6 +842,18 @@ public class UserInterface {
 
         System.out.println("Balance: " + client.getBalance());
     }
+
+    public void listStockedProducts() {
+        Iterator iterator = warehouse.getSuppliers();
+
+        while (iterator.hasNext()) {
+            Supplier supplier = (Supplier) iterator.next();
+
+            if (supplier.getQuantity() > 0) {
+                System.out.println(supplier);
+            }
+        }
+    }
     // End commands.
 
     // Helper methods.

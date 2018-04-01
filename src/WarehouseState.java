@@ -16,7 +16,7 @@ public abstract class WarehouseState {
     protected String getToken(String prompt) {
         do {
             try {
-                System.out.println(prompt);
+                System.out.print(prompt);
                 String line = reader.readLine();
                 StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
                 if (tokenizer.hasMoreTokens()) {
@@ -31,7 +31,7 @@ public abstract class WarehouseState {
     protected int getCommand(int first, int last) {
         do {
             try {
-                int value = Integer.parseInt(getToken("Enter command:" ));
+                int value = Integer.parseInt(getToken("Enter command: "));
                 if (value >= first && value <= last) {
                     return value;
                 }

@@ -22,7 +22,8 @@ public class ManagerState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu = " [ " + LOGOUT + " ] to logout\n" +
+        String menu = "\n" +
+                " [ " + LOGOUT + " ] to logout\n" +
                 " [ " + BECOME_CLIENT + " ] to become a client\n" +
                 " [ " + BECOME_SALES + " ] to become sales\n" +
                 " [ " + ADD_MANUFACTURER + " ] to add a manufacturer\n";

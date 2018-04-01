@@ -24,7 +24,8 @@ public class ClientState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu = " [ " + LOGOUT + " ] to logout\n" +
+        String menu = "\n" +
+                " [ " + LOGOUT + " ] to logout\n" +
                 " [ " + LIST_PRODUCTS + " ] to list all products\n" +
                 " [ " + PLACE_ORDER + " ] to place an order\n" +
                 " [ " + LIST_ORDERS + " ] to get client orders\n" +

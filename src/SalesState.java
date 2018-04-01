@@ -1,11 +1,12 @@
 public class SalesState extends WarehouseState {
-    private static final int LOGOUT             = 0,
-                             BECOME_CLIENT      = 1,
-                             ADD_CLIENT         = 2,
-                             LIST_CLIENTS       = 3,
-                             ADD_PRODUCT        = 4,
-                             LIST_PRODUCTS      = 5,
-                             LIST_MANUFACTURERS = 6;
+    private static final int LOGOUT                 = 0,
+                             BECOME_CLIENT          = 1,
+                             ADD_CLIENT             = 2,
+                             LIST_CLIENTS           = 3,
+                             ADD_PRODUCT            = 4,
+                             LIST_PRODUCTS          = 5,
+                             LIST_STOCKED_PRODUCTS  = 6,
+                             LIST_MANUFACTURERS     = 7;
 
     private static SalesState salesState;
 
@@ -25,13 +26,14 @@ public class SalesState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu =
+        String menu = "\n" +
                 " [ " + LOGOUT + " ] to logout\n" +
                 " [ " + BECOME_CLIENT + " ] to become a client\n" +
                 " [ " + ADD_CLIENT + " ] to add a client\n" +
                 " [ " + LIST_CLIENTS + " ] to list clients\n" +
                 " [ " + ADD_PRODUCT + " ] to add a product\n" +
                 " [ " + LIST_PRODUCTS + " ] to list products\n" +
+                " [ " + LIST_STOCKED_PRODUCTS + " ] to list all stocked products\n" +
                 " [ " + LIST_MANUFACTURERS + " ] to list manufacturers\n";
 
         do {
@@ -57,6 +59,10 @@ public class SalesState extends WarehouseState {
 
                 case LIST_PRODUCTS:
                     listProducts();
+                    break;
+
+                case LIST_STOCKED_PRODUCTS:
+                    listStockedProducts();
                     break;
 
                 case LIST_MANUFACTURERS:
@@ -95,6 +101,10 @@ public class SalesState extends WarehouseState {
     private void listProducts() {
         System.out.println("sales: list products");
         //UserInterface.instance().listProducts();
+    }
+
+    private void listStockedProducts() {
+        UserInterface.instance().listStockedProducts();
     }
 
     private void listManufacturers() {
