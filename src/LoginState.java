@@ -61,8 +61,6 @@ public class LoginState extends WarehouseState {
         String username = null;
         String password = null;
 
-        WarehouseUiContext.instance().setCurrentUser(code);
-
         // Get username.
         try {
             System.out.print("Enter username: ");
@@ -82,6 +80,7 @@ public class LoginState extends WarehouseState {
         }
 
         if (security.verify(username, password)) {
+            WarehouseUiContext.instance().setCurrentUser(code);
             WarehouseUiContext.instance().changeState(code);
         }
         else {
