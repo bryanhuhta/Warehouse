@@ -6,7 +6,6 @@ public class SalesState extends WarehouseState {
                              LIST_PRODUCTS      = 4,
                              LIST_MANUFACTURERS = 5;
 
-    private WarehouseUiContext context;
     private static SalesState salesState;
 
     private SalesState() {
@@ -57,6 +56,9 @@ public class SalesState extends WarehouseState {
                     listManufacturers();
                     break;
 
+                case LOGOUT:
+                    break;
+
                 default:
                     System.out.println("Invalid choice.");
                     break;
@@ -67,7 +69,7 @@ public class SalesState extends WarehouseState {
     }
 
     private void becomeClient() {
-        System.out.println("sales: Become a client");
+        WarehouseUiContext.instance().changeState(1);
     }
 
     private void addClient() {

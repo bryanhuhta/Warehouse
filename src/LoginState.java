@@ -38,6 +38,9 @@ public class LoginState extends WarehouseState {
                     login(command);
                     break;
 
+                case EXIT:
+                    break;
+
                 default:
                     System.out.println("Invalid choice.");
                     break;

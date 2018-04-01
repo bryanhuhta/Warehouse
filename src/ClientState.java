@@ -2,11 +2,10 @@ public class ClientState extends WarehouseState {
     private static final int LOGOUT         = 0,
                              LIST_PRODUCTS  = 1,
                              PLACE_ORDER    = 2,
-                             LIST_ORDERS     = 3,
+                             LIST_ORDERS    = 3,
                              GET_BALANCE    = 4,
                              MAKE_PAYMENT   = 5;
 
-    private WarehouseUiContext context;
     private static ClientState clientState;
 
     private ClientState() {
@@ -57,6 +56,9 @@ public class ClientState extends WarehouseState {
                     makePayment();
                     break;
 
+                case LOGOUT:
+                    break;
+
                 default:
                     System.out.println("Invalid choice.");
                     break;
@@ -67,8 +69,7 @@ public class ClientState extends WarehouseState {
     }
 
     private void listProducts() {
-        System.out.println("client: List products");
-        // UserInterface.instance().listProducts();
+        UserInterface.instance().listProducts();
     }
 
     private void placeOrder() {

@@ -44,6 +44,9 @@ public class ManagerState extends WarehouseState {
                     addManufacturer();
                     break;
 
+                case LOGOUT:
+                    break;
+
                 default:
                     System.out.println("Invalid choice.");
                     break;
@@ -54,11 +57,11 @@ public class ManagerState extends WarehouseState {
     }
 
     private void becomeClient() {
-        System.out.println("manager: Become client");
+        WarehouseUiContext.instance().changeState(1);
     }
 
     private void becomeSales() {
-        System.out.println("manager: Become sales");
+        WarehouseUiContext.instance().changeState(2);
     }
 
     private void addManufacturer() {

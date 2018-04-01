@@ -72,18 +72,6 @@ public class WarehouseUiContext extends WarehouseContext {
         return currentUser;
     }
 
-    public void setUserId(String uid) {
-        userId = uid;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public static Warehouse getWarehouse() {
-        return warehouse;
-    }
-
     @Override
     protected void terminate() {
         if (yesOrNo("Save to disk?")) {
@@ -137,8 +125,8 @@ public class WarehouseUiContext extends WarehouseContext {
     }
 
     private boolean yesOrNo(String prompt) {
-        String more = getToken(prompt + " (Y|y)[es] or anything else for no");
-        return (more.charAt(0) != 'y' && more.charAt(0) != 'Y');
+        String more = getToken(prompt + " ( [y]es | [n]o )");
+        return (more.charAt(0) == 'y' && more.charAt(0) == 'Y');
     }
 
     public static void main(String[] args) {
