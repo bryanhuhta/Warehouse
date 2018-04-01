@@ -37,11 +37,7 @@ public class UserInterface {
 
     // Constructors.
     private UserInterface() {
-        if (response("Load saved session?")) {
-            retrieve();
-        } else {
-            warehouse = Warehouse.instance();
-        }
+        warehouse = Warehouse.instance();
     }
 
     public static UserInterface instance() {
@@ -364,7 +360,7 @@ public class UserInterface {
     }
 
     // 7.
-    private void listClients() {
+    public void listClients() {
         Iterator iterator = warehouse.getClients();
 
         while (iterator.hasNext()) {

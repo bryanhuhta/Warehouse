@@ -27,7 +27,8 @@ public class LoginState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu = " [ " + EXIT + " ] to exit\n" +
+        String menu =
+                " [ " + EXIT + " ] to exit\n" +
                 " [ " + CLIENT + " ] to login as client\n" +
                 " [ " + SALES + " ] to login as sales\n" +
                 " [ " + MANAGER + " ] to login as manager\n";

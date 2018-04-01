@@ -58,7 +58,6 @@ public class WarehouseUiContext extends WarehouseContext {
     public static WarehouseUiContext instance() {
         if (context == null) {
             context = new WarehouseUiContext();
-            buildFsm();
         }
 
         return context;
@@ -85,10 +84,6 @@ public class WarehouseUiContext extends WarehouseContext {
 
         System.out.println("Exiting.");
         System.exit(0);
-    }
-
-    private static void buildFsm() {
-
     }
 
     private void retrieve() {
@@ -126,7 +121,7 @@ public class WarehouseUiContext extends WarehouseContext {
 
     private boolean yesOrNo(String prompt) {
         String more = getToken(prompt + " ( [y]es | [n]o )");
-        return (more.charAt(0) == 'y' && more.charAt(0) == 'Y');
+        return (more.charAt(0) == 'y' || more.charAt(0) == 'Y');
     }
 
     public static void main(String[] args) {

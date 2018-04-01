@@ -2,9 +2,10 @@ public class SalesState extends WarehouseState {
     private static final int LOGOUT             = 0,
                              BECOME_CLIENT      = 1,
                              ADD_CLIENT         = 2,
-                             ADD_PRODUCT        = 3,
-                             LIST_PRODUCTS      = 4,
-                             LIST_MANUFACTURERS = 5;
+                             LIST_CLIENTS       = 3,
+                             ADD_PRODUCT        = 4,
+                             LIST_PRODUCTS      = 5,
+                             LIST_MANUFACTURERS = 6;
 
     private static SalesState salesState;
 
@@ -24,9 +25,11 @@ public class SalesState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu = " [ " + LOGOUT + " ] to logout\n" +
+        String menu =
+                " [ " + LOGOUT + " ] to logout\n" +
                 " [ " + BECOME_CLIENT + " ] to become a client\n" +
                 " [ " + ADD_CLIENT + " ] to add a client\n" +
+                " [ " + LIST_CLIENTS + " ] to list clients\n" +
                 " [ " + ADD_PRODUCT + " ] to add a product\n" +
                 " [ " + LIST_PRODUCTS + " ] to list products\n" +
                 " [ " + LIST_MANUFACTURERS + " ] to list manufacturers\n";
@@ -42,6 +45,10 @@ public class SalesState extends WarehouseState {
 
                 case ADD_CLIENT:
                     addClient();
+                    break;
+
+                case LIST_CLIENTS:
+                    listClients();
                     break;
 
                 case ADD_PRODUCT:
@@ -73,8 +80,11 @@ public class SalesState extends WarehouseState {
     }
 
     private void addClient() {
-        System.out.println("sales: add client");
-        //UserInterface.instance().addClient();
+        UserInterface.instance().addClient();
+    }
+
+    private void listClients() {
+        UserInterface.instance().listClients();
     }
 
     private void addProduct() {
