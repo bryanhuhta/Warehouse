@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 public class LoginState extends WarehouseState {
     private static final int EXIT       = 0,
                              CLIENT     = 1,
@@ -5,6 +8,8 @@ public class LoginState extends WarehouseState {
                              MANAGER    = 3;
 
     private static LoginState loginState;
+    private BufferedReader reader =
+            new BufferedReader(new InputStreamReader(System.in));
 
     private LoginState() {
         super();
@@ -52,7 +57,35 @@ public class LoginState extends WarehouseState {
     }
 
     private void login(int code) {
+        Security security = new Security();
+        String username = null;
+        String password = null;
+
         WarehouseUiContext.instance().setCurrentUser(code);
-        WarehouseUiContext.instance().changeState(code);
+
+        // Get username.
+        try {
+            System.out.print("Enter username: ");
+            username = reader.readLine();
+        }
+        catch (Exception e) {
+            System.out.println("Could not read username.");
+        }
+
+        // Get password.
+        try {
+            System.out.print("Enter password: ");
+            password = reader.readLine();
+        }
+        catch (Exception e) {
+            System.out.println("Could not read password.");
+        }
+
+        if (security.verify(username, password)) {
+            WarehouseUiContext.instance().changeState(code);
+        }
+        else {
+            System.out.println("Invalid username or password.");
+        }
     }
 }

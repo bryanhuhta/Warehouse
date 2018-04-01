@@ -69,7 +69,7 @@ public class ClientState extends WarehouseState {
     }
 
     private void listProducts() {
-        UserInterface.instance().listProducts();
+        System.out.println("List products");
     }
 
     private void placeOrder() {
