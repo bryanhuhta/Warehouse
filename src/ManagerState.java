@@ -22,11 +22,7 @@ public class ManagerState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu = "\n" +
-                " [ " + LOGOUT + " ] to logout\n" +
-                " [ " + BECOME_CLIENT + " ] to become a client\n" +
-                " [ " + BECOME_SALES + " ] to become sales\n" +
-                " [ " + ADD_MANUFACTURER + " ] to add a manufacturer\n";
+        String menu = buildMenu();
 
         do {
             System.out.println(menu);
@@ -72,5 +68,21 @@ public class ManagerState extends WarehouseState {
 
     private void logout() {
         WarehouseUiContext.instance().changeState(0);
+    }
+
+    private String buildMenu() {
+        return "\n" +
+                formatMenuItem(LOGOUT,
+                        "to logout") +
+                formatMenuItem(BECOME_CLIENT,
+                        "to become a client") +
+                formatMenuItem(BECOME_SALES,
+                        "to become sales") +
+                formatMenuItem(ADD_MANUFACTURER,
+                        "to add a manufacturer");
+    }
+
+    private String formatMenuItem(int optionId, String description) {
+        return " [ " + optionId + " ]\t" + description + "\n";
     }
 }
