@@ -67,11 +67,12 @@ public class ManagerState extends WarehouseState {
     }
 
     private void logout() {
+        WarehouseUiContext.instance().setUserId(null);
         WarehouseUiContext.instance().changeState(0);
     }
 
     private String buildMenu() {
-        return "\n" +
+        return "User: " + WarehouseUiContext.instance().getUserId() + "\n" +
                 formatMenuItem(LOGOUT,
                         "to logout") +
                 formatMenuItem(BECOME_CLIENT,

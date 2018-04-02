@@ -71,6 +71,14 @@ public class WarehouseUiContext extends WarehouseContext {
         return currentUser;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     protected void terminate() {
         if (yesOrNo("Save to disk?")) {

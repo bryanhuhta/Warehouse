@@ -78,6 +78,7 @@ public class LoginState extends WarehouseState {
 
         if (security.verify(username, password)) {
             WarehouseUiContext.instance().setCurrentUser(code);
+            WarehouseUiContext.instance().setUserId(username);
             WarehouseUiContext.instance().changeState(code);
         }
         else {

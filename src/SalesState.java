@@ -121,6 +121,7 @@ public class SalesState extends WarehouseState {
             case 2:
                 // User is sales, logout.
                 nextState = 0;
+                WarehouseUiContext.instance().setUserId(null);
                 WarehouseUiContext.instance()
                         .setCurrentUser(WarehouseUiContext.instance().NONE);
                 break;
@@ -135,7 +136,7 @@ public class SalesState extends WarehouseState {
     }
 
     private String buildMenu() {
-        return "\n" +
+        return "User: " + WarehouseUiContext.instance().getUserId() + "\n" +
             formatMenuItem(LOGOUT,
                     "to logout") +
             formatMenuItem(BECOME_CLIENT,
