@@ -1,12 +1,20 @@
 public class SalesState extends WarehouseState {
-    private static final int LOGOUT                 = 0,
-                             BECOME_CLIENT          = 1,
-                             ADD_CLIENT             = 2,
-                             LIST_CLIENTS           = 3,
-                             ADD_PRODUCT            = 4,
-                             LIST_PRODUCTS          = 5,
-                             LIST_STOCKED_PRODUCTS  = 6,
-                             LIST_MANUFACTURERS     = 7;
+    private static final int LOGOUT                             = 0,
+                             BECOME_CLIENT                      = 1,
+                             ADD_CLIENT                         = 2,
+                             LIST_CLIENTS                       = 3,
+                             ADD_PRODUCT                        = 4,
+                             LIST_PRODUCTS                      = 5,
+                             LIST_STOCKED_PRODUCTS              = 6,
+                             LIST_MANUFACTURERS                 = 7,
+                             LIST_MANUFACTURERS_FOR_PRODUCT     = 8,
+                             PROCESS_MANUFACTURER_ORDER         = 9,
+                             LIST_SUPPLIERS                     = 10,
+                             LIST_ORDERS                        = 11,
+                             LIST_CLIENTS_OUTSTANDING_BALANCE   = 12,
+                             GET_WAITLISTED_ORDERS_PRODUCT      = 13,
+                             GET_WAITLISTED_ORDERS_CLIENT       = 14,
+                             ACCEPT_CLIENT_PAYMENT              = 15;
 
     private static SalesState salesState;
 
@@ -26,15 +34,7 @@ public class SalesState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu = "\n" +
-                " [ " + LOGOUT + " ] to logout\n" +
-                " [ " + BECOME_CLIENT + " ] to become a client\n" +
-                " [ " + ADD_CLIENT + " ] to add a client\n" +
-                " [ " + LIST_CLIENTS + " ] to list clients\n" +
-                " [ " + ADD_PRODUCT + " ] to add a product\n" +
-                " [ " + LIST_PRODUCTS + " ] to list products\n" +
-                " [ " + LIST_STOCKED_PRODUCTS + " ] to list all stocked products\n" +
-                " [ " + LIST_MANUFACTURERS + " ] to list manufacturers\n";
+        String menu = buildMenu();
 
         do {
             System.out.println(menu);
@@ -42,34 +42,67 @@ public class SalesState extends WarehouseState {
 
             switch (command) {
                 case BECOME_CLIENT:
-                    becomeClient();
+                    WarehouseUiContext.instance().changeState(1);
                     break;
 
                 case ADD_CLIENT:
-                    addClient();
+                    UserInterface.instance().addClient();
                     break;
 
                 case LIST_CLIENTS:
-                    listClients();
+                    UserInterface.instance().listClients();
                     break;
 
                 case ADD_PRODUCT:
-                    addProduct();
+                    UserInterface.instance().addProduct();
                     break;
 
                 case LIST_PRODUCTS:
-                    listProducts();
+                    UserInterface.instance().listProducts();
                     break;
 
                 case LIST_STOCKED_PRODUCTS:
-                    listStockedProducts();
+                    UserInterface.instance().listStockedProducts();
                     break;
 
                 case LIST_MANUFACTURERS:
-                    listManufacturers();
+                    UserInterface.instance().listManufacturers();
+                    break;
+
+                case LIST_MANUFACTURERS_FOR_PRODUCT:
+                    UserInterface.instance().setListManufacturerForProduct();
+                    break;
+
+                case PROCESS_MANUFACTURER_ORDER:
+                    UserInterface.instance().processManufacturerOrder();
+                    break;
+
+                case LIST_SUPPLIERS:
+                    UserInterface.instance().listSuppliers();
+                    break;
+
+                case LIST_ORDERS:
+                    UserInterface.instance().listOrders();
+                    break;
+
+                case LIST_CLIENTS_OUTSTANDING_BALANCE:
+                    UserInterface.instance().listOutstandingBalances();
+                    break;
+
+                case GET_WAITLISTED_ORDERS_PRODUCT:
+                    UserInterface.instance().getProductWaitlist();
+                    break;
+
+                case GET_WAITLISTED_ORDERS_CLIENT:
+                    UserInterface.instance().getClientWaitlist();
+                    break;
+
+                case ACCEPT_CLIENT_PAYMENT:
+                    UserInterface.instance().acceptClientPayment();
                     break;
 
                 case LOGOUT:
+                    // Empty case to avoid printing an error message.
                     break;
 
                 default:
@@ -79,37 +112,6 @@ public class SalesState extends WarehouseState {
         } while (command != LOGOUT);
 
         logout();
-    }
-
-    private void becomeClient() {
-        WarehouseUiContext.instance().changeState(1);
-    }
-
-    private void addClient() {
-        UserInterface.instance().addClient();
-    }
-
-    private void listClients() {
-        UserInterface.instance().listClients();
-    }
-
-    private void addProduct() {
-        System.out.println("sales: add product");
-        //UserInterface.instance().addProduct();
-    }
-
-    private void listProducts() {
-        System.out.println("sales: list products");
-        //UserInterface.instance().listProducts();
-    }
-
-    private void listStockedProducts() {
-        UserInterface.instance().listStockedProducts();
-    }
-
-    private void listManufacturers() {
-        System.out.println("sales: list manufacturers");
-        //UserInterface.instance().listManufacturers();
     }
 
     private void logout() {
@@ -130,5 +132,45 @@ public class SalesState extends WarehouseState {
         }
 
         WarehouseUiContext.instance().changeState(nextState);
+    }
+
+    private String buildMenu() {
+        return "\n" +
+            formatMenuItem(LOGOUT,
+                    "to logout") +
+            formatMenuItem(BECOME_CLIENT,
+                    "to become a client") +
+            formatMenuItem(ADD_CLIENT,
+                    "to add a client") +
+            formatMenuItem(LIST_CLIENTS,
+                    "to list clients") +
+            formatMenuItem(ADD_PRODUCT,
+                    "to add a product") +
+            formatMenuItem(LIST_PRODUCTS,
+                    "to list products") +
+            formatMenuItem(LIST_STOCKED_PRODUCTS,
+                    "to list stocked products") +
+            formatMenuItem(LIST_MANUFACTURERS,
+                    "to list manufacturers") +
+            formatMenuItem(LIST_MANUFACTURERS_FOR_PRODUCT,
+                    "to list manufacturers for a product") +
+            formatMenuItem(PROCESS_MANUFACTURER_ORDER,
+                    "to process manufacturer order") +
+            formatMenuItem(LIST_SUPPLIERS,
+                    "to list suppliers") +
+            formatMenuItem(LIST_ORDERS,
+                    "to list orders") +
+            formatMenuItem(LIST_CLIENTS_OUTSTANDING_BALANCE,
+                    "to list clients with an outstanding balance") +
+            formatMenuItem(GET_WAITLISTED_ORDERS_PRODUCT,
+                    "to get waitlisted orders for a product") +
+            formatMenuItem(GET_WAITLISTED_ORDERS_CLIENT,
+                    "to get waitlisted orders for a client") +
+            formatMenuItem(ACCEPT_CLIENT_PAYMENT,
+                    "to process a client payment");
+    }
+
+    private String formatMenuItem(int optionId, String description) {
+        return " [ " + optionId + " ]\t" + description + "\n";
     }
 }

@@ -289,7 +289,7 @@ public class UserInterface {
     }
 
     // 5.
-    private void addSupplier() {
+    public void addSupplier() {
         String mid = null;
         String pid = null;
         int quantity = -1;
@@ -334,7 +334,7 @@ public class UserInterface {
     }
 
     // 6.
-    private void deleteSupplier() {
+    public void deleteSupplier() {
         String mid = null;
         String pid = null;
 
@@ -393,7 +393,7 @@ public class UserInterface {
     }
 
     // 10.
-    private void listSuppliers() {
+    public void listSuppliers() {
         Iterator iterator = warehouse.getSuppliers();
 
         while (iterator.hasNext()) {
@@ -404,7 +404,7 @@ public class UserInterface {
     }
 
     // 11.
-    private void listOrders() {
+    public void listOrders() {
         Iterator iterator = warehouse.getOrders();
 
         while (iterator.hasNext()) {
@@ -415,7 +415,7 @@ public class UserInterface {
     }
 
     // 12.
-    private void listOutstandingBalances() {
+    public void listOutstandingBalances() {
         Iterator iterator = warehouse.getClients();
 
         while (iterator.hasNext()) {
@@ -428,7 +428,7 @@ public class UserInterface {
     }
 
     // 13.
-    private void getProductWaitlist() {
+    public void getProductWaitlist() {
         String pid = null;
         Product product = null;
 
@@ -462,7 +462,7 @@ public class UserInterface {
     }
 
     // 14.
-    private void getClientWaitlist() {
+    public void getClientWaitlist() {
         String cid = null;
         Client client = null;
 
@@ -649,7 +649,7 @@ public class UserInterface {
     }
 
     // 17.
-    private void placeManufacturerOrder() {
+    public void placeManufacturerOrder() {
         String mid = null;
         String pid = null;
         int quantity = -1;
@@ -696,7 +696,7 @@ public class UserInterface {
     }
 
     // 18.
-    private void processManufacturerOrder() {
+    public void processManufacturerOrder() {
         String oid = null;
         String response = null;
         int quantity = 0;
@@ -850,6 +850,37 @@ public class UserInterface {
             Supplier supplier = (Supplier) iterator.next();
 
             if (supplier.getQuantity() > 0) {
+                System.out.println(supplier);
+            }
+        }
+    }
+
+    public void setListManufacturerForProduct() {
+        String pid = null;
+        Product product = null;
+
+        // Get the pid and find the product.
+        do {
+            try {
+                System.out.print("Enter product id: ");
+                pid = reader.readLine();
+            } catch (Exception e) {
+                System.out.println("Invalid product id, try again.");
+                e.printStackTrace();
+            }
+        } while (pid == null);
+
+        product = warehouse.getProduct(pid);
+        if (product == null) {
+            System.out.println("Product does not exist.");
+            return;
+        }
+
+        Iterator iterator = warehouse.getSuppliers();
+        while (iterator.hasNext()) {
+            Supplier supplier = (Supplier) iterator.next();
+
+            if (supplier.getProduct() == product) {
                 System.out.println(supplier);
             }
         }
