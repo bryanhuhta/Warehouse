@@ -27,11 +27,7 @@ public class LoginState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu =  "\n" +
-                " [ " + EXIT + " ] to exit\n" +
-                " [ " + CLIENT + " ] to login as client\n" +
-                " [ " + SALES + " ] to login as sales\n" +
-                " [ " + MANAGER + " ] to login as manager\n";
+        String menu = buildMenu();
 
         do {
             System.out.println(menu);
@@ -87,5 +83,21 @@ public class LoginState extends WarehouseState {
         else {
             System.out.println("Invalid username or password.");
         }
+    }
+
+    private String buildMenu() {
+        return "\n" +
+                formatMenuItem(EXIT,
+                        "to exit") +
+                formatMenuItem(CLIENT,
+                        "to login as client") +
+                formatMenuItem(SALES,
+                        "to login as sales") +
+                formatMenuItem(MANAGER,
+                        "to login as manager");
+    }
+
+    private String formatMenuItem(int optionId, String description) {
+        return " [ " + optionId + " ]\t" + description + "\n";
     }
 }
