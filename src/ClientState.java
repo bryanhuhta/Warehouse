@@ -25,6 +25,7 @@ public class ClientState extends WarehouseState {
         int command;
 
         String menu = buildMenu();
+        String uid = WarehouseUiContext.instance().getUserId();
 
         do {
             System.out.println(menu);
@@ -32,23 +33,23 @@ public class ClientState extends WarehouseState {
 
             switch (command) {
                 case LIST_PRODUCTS:
-                    listProducts();
+                    UserInterface.instance().listStockedProducts();
                     break;
 
                 case PLACE_ORDER:
-                    placeOrder();
+                    UserInterface.instance().placeClientOrder();
                     break;
 
                 case LIST_ORDERS:
-                    listOrders();
+                    UserInterface.instance().listOrdersByClient(uid);
                     break;
 
                 case GET_BALANCE:
-                    getBalance();
+                    UserInterface.instance().getClientBalance(uid);
                     break;
 
                 case MAKE_PAYMENT:
-                    makePayment();
+                    UserInterface.instance().makeClientPayment(uid);
                     break;
 
                 case LOGOUT:

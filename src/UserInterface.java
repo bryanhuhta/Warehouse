@@ -49,132 +49,6 @@ public class UserInterface {
     }
     // End Constructors.
 
-    // Process commands.
-    private boolean response(String prompt) {
-        String next = getToken(prompt + " (y/n)");
-        return (next.charAt(0) == 'y' || next.charAt(0) == 'Y');
-    }
-
-    private String getToken(String prompt) {
-        do {
-            try {
-                System.out.println(prompt);
-
-                String line = reader.readLine();
-                StringTokenizer tokenizer =
-                        new StringTokenizer(line, "\n\r\f");
-
-                if (tokenizer.hasMoreTokens()) {
-                    return tokenizer.nextToken();
-                }
-            } catch (Exception e) {
-                exit(2);
-            }
-        } while (true);
-    }
-
-    private int getCommand() {
-        do {
-            try {
-                int value = Integer.parseInt((getToken("Type " + HELP
-                        + " for help. Enter command: ")));
-                if (value <= EXIT && value >= HELP) {
-                    return value;
-                }
-            } catch (Exception e) {
-                System.out.println("Command must be a number.");
-            }
-        } while (true);
-    }
-
-    private void process() {
-        int command;
-        help();
-
-        while ((command = getCommand()) != EXIT) {
-            switch (command) {
-                case HELP:
-                    help();
-                    break;
-
-                case SAVE:
-                    save();
-                    break;
-
-                case ADD_CLIENT:
-                    addClient();
-                    break;
-
-                case ADD_PRODUCT:
-                    addProduct();
-                    break;
-
-                case ADD_MANUFACTURERS:
-                    addManufacturers();
-                    break;
-
-                case ADD_SUPPLIER:
-                    addSupplier();
-                    break;
-
-                case DELETE_SUPPLIER:
-                    deleteSupplier();
-                    break;
-
-                case LIST_CLIENTS:
-                    listClients();
-                    break;
-
-                case LIST_PRODUCTS:
-                    listProducts();
-                    break;
-
-                case LIST_MANUFACTURERS:
-                    listManufacturers();
-                    break;
-
-                case LIST_SUPPLIERS:
-                    listSuppliers();
-                    break;
-
-                case LIST_ORDERS:
-                    listOrders();
-                    break;
-
-                case LIST_CLIENTS_OUTSTANDING_BALANCE:
-                    listOutstandingBalances();
-                    break;
-
-                case GET_WAITLISTED_ORDERS_PRODUCT:
-                    getProductWaitlist();
-                    break;
-
-                case GET_WAITLISTED_ORDERS_CLIENT:
-                    getClientWaitlist();
-                    break;
-
-                case ACCEPT_CLIENT_PAYMENT:
-                    acceptClientPayment();
-                    break;
-
-                case PLACE_CLIENT_ORDER:
-                    placeClientOrder();
-                    break;
-
-                case PLACE_MANUFACTURER_ORDER:
-                    placeManufacturerOrder();
-                    break;
-
-                case PROCESS_MANUFACTURER_ORDER:
-                    processManufacturerOrder();
-                    break;
-            }
-        }
-
-        System.out.println("Exiting...");
-    }
-    // End process commands.
-
     // Commands:
     // 0.
     private void help() {
@@ -799,20 +673,7 @@ public class UserInterface {
         }
     }
 
-    public void listOrdersByClient() {
-        String cid = null;
-
-        // Collect cid.
-        do {
-            try {
-                System.out.print("Enter client id: ");
-                cid = reader.readLine();
-            } catch (Exception e) {
-                System.out.println("Invalid input, try again.");
-                e.printStackTrace();
-            }
-        } while (cid == null);
-
+    public void listOrdersByClient(String cid) {
         Iterator iterator = warehouse.getOrders();
 
         while (iterator.hasNext()) {
@@ -824,22 +685,8 @@ public class UserInterface {
         }
     }
 
-    public void getClientBalance() {
-        String cid = null;
-
-        // Collect cid.
-        do {
-            try {
-                System.out.print("Enter client id: ");
-                cid = reader.readLine();
-            } catch (Exception e) {
-                System.out.println("Invalid input, try again.");
-                e.printStackTrace();
-            }
-        } while (cid == null);
-
+    public void getClientBalance(String cid) {
         Client client = warehouse.getClient(cid);
-
         System.out.println("Balance: " + client.getBalance());
     }
 
@@ -884,6 +731,33 @@ public class UserInterface {
                 System.out.println(supplier);
             }
         }
+    }
+
+    public void makeClientPayment(String cid) {
+        Client client = warehouse.getClient(cid);
+        double amount = 0;
+
+        do {
+            try {
+                System.out.print("Enter payment: ");
+                amount = Double.parseDouble(reader.readLine());
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Must be a number.");
+            }
+            catch (Exception e) {
+                System.out.println("Buffered reader error.");
+            }
+
+            if (amount <= 0) {
+                System.out.println("Must be greater than 0.");
+            }
+
+        } while (amount <= 0);
+
+        client.chargeAccount(amount);
+
+        System.out.println("New balance: " + client.getBalance());
     }
     // End commands.
 

@@ -38,7 +38,7 @@ public class SalesState extends WarehouseState {
 
         do {
             System.out.println(menu);
-            command = getCommand(LOGOUT, LIST_MANUFACTURERS);
+            command = getCommand(LOGOUT, ACCEPT_CLIENT_PAYMENT);
 
             switch (command) {
                 case BECOME_CLIENT:
