@@ -759,6 +759,63 @@ public class UserInterface {
 
         System.out.println("New balance: " + client.getBalance());
     }
+
+    public void modifySalePrice() {
+        String pid = null;
+        String mid = null;
+        double newPrice = -1;
+
+        Product product = null;
+        Supplier supplier = null;
+
+        // Get the pid and find the product.
+        do {
+            try {
+                System.out.print("Enter product id: ");
+                pid = reader.readLine();
+            } catch (Exception e) {
+                System.out.println("Invalid product id, try again.");
+                e.printStackTrace();
+            }
+        } while (pid == null);
+        product = warehouse.getProduct(pid);
+
+        // Get the mid and find the supplier.
+        do {
+            try {
+                System.out.print("Enter manufacturer id: ");
+                mid = reader.readLine();
+            } catch (Exception e) {
+                System.out.println("Invalid manufacturer id, try again.");
+                e.printStackTrace();
+            }
+        } while (mid == null);
+        supplier = warehouse.getSupplier(mid, pid);
+
+        // Get the new price and update current price.
+        do {
+            try {
+                System.out.println("Old price: " + supplier.getCost());
+                System.out.print("Enter new price: ");
+                newPrice = Double.parseDouble(reader.readLine());
+            }
+            catch (NumberFormatException e) {
+                System.out.println("Invalid price try again.");
+                newPrice = -1;
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (newPrice < 0) {
+                System.out.println("Price must be 0 or greater.");
+            }
+
+        } while (newPrice < 0);
+        supplier.updateCost(newPrice);
+
+        System.out.println("New price: " + supplier.getCost());
+    }
     // End commands.
 
     // Helper methods.
