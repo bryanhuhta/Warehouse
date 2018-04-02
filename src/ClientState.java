@@ -24,13 +24,7 @@ public class ClientState extends WarehouseState {
     public void run() {
         int command;
 
-        String menu = "\n" +
-                " [ " + LOGOUT + " ] to logout\n" +
-                " [ " + LIST_PRODUCTS + " ] to list all products\n" +
-                " [ " + PLACE_ORDER + " ] to place an order\n" +
-                " [ " + LIST_ORDERS + " ] to get client orders\n" +
-                " [ " + GET_BALANCE + " ] to get balance\n" +
-                " [ " + MAKE_PAYMENT + " ] to make a payment\n";
+        String menu = buildMenu();
 
         do {
             System.out.println(menu);
@@ -116,5 +110,25 @@ public class ClientState extends WarehouseState {
         }
 
         WarehouseUiContext.instance().changeState(nextState);
+    }
+
+    private String buildMenu() {
+        return "\n" +
+                formatMenuItem(LOGOUT,
+                        "to logout") +
+                formatMenuItem(LIST_PRODUCTS,
+                        "to list products") +
+                formatMenuItem(PLACE_ORDER,
+                        "to place an order") +
+                formatMenuItem(LIST_ORDERS,
+                        "to list orders") +
+                formatMenuItem(GET_BALANCE,
+                        "to get balance") +
+                formatMenuItem(MAKE_PAYMENT,
+                        "to make a payment");
+    }
+
+    private String formatMenuItem(int optionId, String description) {
+        return " [ " + optionId + " ]\t" + description + "\n";
     }
 }
